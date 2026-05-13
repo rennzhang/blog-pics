@@ -1,0 +1,2004 @@
+# PRD_查单词_V1.0 **版本管理**
+
+<table>
+<tr>
+<td>版本号<br/></td><td>日期<br/></td><td>变更人<br/></td><td>变更类型<br/></td><td>变更详情<br/></td></tr>
+<tr>
+<td>V1.0.0<br/></td><td>2025.6.24<br/></td><td>冯玉妍<br/></td><td>新建<br/></td><td>新建文档<br/></td></tr>
+</table>
+
+**关联需求**
+
+<table>
+<tr>
+<td>关联需求名称<br/></td><td>所属PM<br/></td><td>需求进度<br/></td><td>文档链接<br/></td></tr>
+</table>
+
+**设计稿（如有）**
+视觉稿：[https://www.figma.com/design/ArTLqxnR2hdLTXfguwDUia/%E6%9F%A5%E8%AF%8D%E5%85%B8?node-id=0-1&p=f&t=nT3ThqhVnD2KPPqB-0](https://www.figma.com/design/ArTLqxnR2hdLTXfguwDUia/%E6%9F%A5%E8%AF%8D%E5%85%B8?node-id=0-1&p=f&t=nT3ThqhVnD2KPPqB-0)
+
+### 一、背景和目标
+
+#### 1.1、需求背景
+
+持学生课中和课下自主查单词的学习需求，提供一个便捷易用的工具产品。
+为满足学生在课堂学习、课后作业和自主学习中的查单词需求，提供一个便捷易用的工具产品，支持学生查询词义用法、沉淀生词用于后续深度学习。
+
+#### 1.2、项目收益
+
+满足用户查单词的学习需求，提供便捷的查词体验。
+衡量功能收益的数据指标如下：
+
+- 核心指标：**查单词功能渗透率；查单词功能留存**
+- 其他观测指标：人均查单词数；人均查单词次数，查单词功能人均使用时长，添加生词本渗透率
+
+#### 1.3、 覆盖用户
+
+合作校学生端全量用户。
+
+#### 1.4、方案简述
+
+- **查单词首页：**支持用户通过搜索框进行中英文字查词，搜索框支持联想，并支持展示查询历史
+- **单词详情页：**用户可通过搜索结果/查询历史进入单词详情页，详情页展示单词、配图、发音、词性、词义、例句等基础信息。
+- **加入生词本：**支持用户在单词详情页将单词加入生词本，生词本内可查看词表和单词详情。
+
+#### 1.5、未来会做什么
+
+- 支持在其他场景唤起查词功能 和 点按查词（课中、练习等）。
+- 支持语音输入和拍照查词。
+
+### **二、名词说明**
+
+
+### 三、业务流程
+
+![VrpLwPSLUhyxACbF4XCcZofJnWc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/board_VrpLwPSLUhyxACbF4XCcZofJnWc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN 逻辑图 ==============】
+
+### 1. 关键元素提炼 & 层级关联
+
+该流程图描述了用户在互联网教育产品中进行单词查询及管理的核心路径。
+
+*   **主流程**: 查单词首页 -> 搜索框输入 -> 提交搜索 -> 进入单词详情页。
+*   **分支流程**:
+    *   **入口**:
+        *   从`查单词首页`可直接`点击进入`查看`生词本`。
+    *   **搜索提交方式**:
+        *   `搜索框输入`后可`直接提交`。
+        *   `搜索框输入`时，可触发`搜索历史`或`搜索联想`，并`点选提交`。
+    *   **后续操作**:
+        *   在`进入单词详情页`后，用户可选择`加入生词本`或`继续搜索`。
+
+### 2. 流程图 (Mermaid)
+
+```mermaid
+flowchart TD
+    A[查单词首页] --> C[搜索框输入]
+    A -- 点击进入 --> B[生词本]
+    
+    C -- 直接提交 --> G[提交搜索]
+    C --> D((搜索历史))
+    C --> E((搜索联想))
+    
+    D -- 点选提交 --> G
+    E -- 点选提交 --> G
+    
+    G --> H[进入单词详情页]
+    
+    H --> I[加入生词本]
+    H --> J[继续搜索]
+```
+
+【============== 图片解析 END ==============】
+
+
+
+### 四、需求概览
+
+<table>
+<tr>
+<td>模块<br/></td><td>功能点<br/></td><td>优先级<br/></td></tr>
+<tr>
+<td rowspan="3">查单词首页<br/></td><td>标题栏<br/></td><td>P0<br/></td></tr>
+<tr>
+<td>查单词搜索框（主入口）<br/></td><td>P0<br/></td></tr>
+<tr>
+<td>生词本入口：点击后进入生词本页<br/></td><td>P0<br/></td></tr>
+<tr>
+<td>搜索页<br/></td><td>支持中英文字搜索、搜索联想精准匹配&模糊匹配、展示搜索历史<br/></td><td>P0<br/></td></tr>
+<tr>
+<td>单词详情页<br/></td><td>展示单词核心信息，包括词义、词性、音标、发音、例句等，支持添加单词至生词本<br/></td><td>P0<br/></td></tr>
+<tr>
+<td>生词本页<br/></td><td>展示生词列表，点击生词进入该单词详情页<br/></td><td>P0<br/></td></tr>
+</table>
+
+### 五、详细产品方案
+
+#### 5.1 功能页面
+
+<table>
+<tr>
+<td>模块<br/></td><td>图示<br/></td><td>详情<br/></td></tr>
+<tr>
+<td>功能入口<br/></td><td>![in_table_ZFo6b7qUAoSx8JxIRpDcjOwanpg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_ZFo6b7qUAoSx8JxIRpDcjOwanpg.png)<br/></td><td>- 功能入口：- 学习tab工具区，点击“查单词”进入查单词首页<br/></td></tr>
+<tr>
+<td>查单词首页<br/></td><td>![in_table_HSPtbBP4RoE0Eyx21q6cPvHan3M](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_HSPtbBP4RoE0Eyx21q6cPvHan3M.png)<br/></td><td>- 首页：- 标题- 返回按钮：点击后返回上一级页面- 查词主入口：- 输入框：空态时展示默认文案“输入英文或中文…”- 交互：点击输入框后进入搜索页面- 生词本入口：点击后进入生词本- 宣传文案：“词库包含十万量级专业词条”（待定）<br/></td></tr>
+<tr>
+<td>搜索页<br/></td><td>![in_table_IqpVbXKeKoav7Jx6WCYcXSLqnOr](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_IqpVbXKeKoav7Jx6WCYcXSLqnOr.png)<br/><br/></td><td>- 搜索页：- 输入：![in_table_NvCTbDdUjomb3mxpVYRcJV2Jnqb](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_NvCTbDdUjomb3mxpVYRcJV2Jnqb.png)![in_table_XS28b1wH3oLPQIxdhh6cGwoMnBe](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_XS28b1wH3oLPQIxdhh6cGwoMnBe.png)![in_table_RbpfboLhioEkpux2hZuczWH4noe](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_RbpfboLhioEkpux2hZuczWH4noe.png)- 本期仅支持文本输入- 点击输入框，唤起键盘，输入框内显示光标，键盘回车键文案展示“搜索”- 进入搜索页面时，输入框自动呈现被选中、键盘唤起状态- 键盘唤起时，点击屏幕其他区域收起键盘，已输入内容（若有）在输入框内保持显示- 输入时，所输入内容展示在输入框内，光标展示在内容结尾；支持点击已输入内容/拖动光标来改变光标位置- 输入框有内容时，展示清空按钮，点击后清空已输入内容，该操作不影响键盘状态- 对输入的内容不支持长按唤起操作菜单- 提交：![in_table_Ob43bGSoeoFIHix2xwAcoFjtnxh](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Ob43bGSoeoFIHix2xwAcoFjtnxh.png)![in_table_VxfHbWlFPodhvsxo3Gfc0OsdnUe](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_VxfHbWlFPodhvsxo3Gfc0OsdnUe.png)- 点击联想词条和键盘回车键均可提交- 点击联想词条：进入该单词详情页- 点击键盘回车键：- 若输入内容不包含中文字符，则直接提交所输入内容进行精准搜索，若搜到对应单词则进入该单词详情页，若未搜到对应单词则进入详情页兜底态- 若输入内容包含中文字符，则点击回车无反应- 若输入框内无内容，则点击回车无反应- 搜索联想![in_table_RqcNbLxZeoVv44x03lhci5Cinoh](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_RqcNbLxZeoVv44x03lhci5Cinoh.png)![in_table_ZfMhbt15DobktUxYV14cqaKOnDd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_ZfMhbt15DobktUxYV14cqaKOnDd.png)- 展示与交互：- 输入框不为空时，展示搜索联想列表：- 从用户输入首个字母起，开始展示搜索联想- 联想列表内容根据输入框里的最新内容动态更新- 若输入内容无法匹配到任何结果，则列表展示无结果态- 若网络请求较慢，展示加载态- 用户点击联想列表中任意一项结果时，跳转该单词详情页- 用户清空搜索框时，联想列表消失- 联想列表高度固定，支持内部滚动- 列表内容：- 搜索结果列表：按搜索到的单词id展示搜索结果，搜索结果按匹配度从高到低展示，最多展示15条（暂定）：- 精准匹配：优先展示精准匹配结果，精准匹配的结果内按以下优先级排序- 若匹配度相同，按以下优先级排序：单词词频（高频>低频>无词频）>单词字母数（字母数少在前）>单词字母顺序（a到z正序）- 单词词频：若该单词有多个词频（不同词性会有不同词频），按最高词频判断- 模糊匹配：若精准匹配结果不足最大展示条数，则展示模糊匹配结果，排序在精准匹配后，模糊匹配结果排序逻辑如下：- 若匹配度相同，按以下优先级排序：词频（高频>低频>无词频）>字母数（字母数少在前）>字母顺序（a到z正序）- 单词词频：- 取单词下词性的词频序号，序号数越小，词频越高。- 若该单词有多个词频（不同词性会有不同词频），按最高词频判断。- 搜索结果条目：- 展示内容：- 单词本身- 单词含义概览：- 按词性聚类，每类展示词性+该词性下所有含义的中文释义- 词性的顺序：含义里先出现的词性在前- 比如“n. 记录，记载；唱片；v. 记录 ”- 超出范围则展示...- by uid 对在最近搜索过的50条单词范围内的词，展示“最近查过”标签 P1- 最近搜索过：指通过搜索进入过单词详情页（从搜索历史、生词本进入单词详情页不算）- 点击词条后，进入对应单词的详情页- 搜索策略：- 搜索范围：- 英文搜索：单词本身- 中文搜索：词条下的所有中文释义- 若用户输入内容有以下范围之外的字符，则在实际搜索时需要过滤掉（不影响展示层面）：英文字符、中文字符、数字、连字符-、英文句号.、英文单引号'、英文&、空格- 搜索能力：包含精准匹配和模糊匹配，具体搜索方案根据实际技术方案而定- 搜索联想：精准匹配+模糊匹配- 点击回车提交搜索：精准匹配- 搜索历史：![in_table_RVVyb1HCGohPcExQGldctYsQnJf](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_RVVyb1HCGohPcExQGldctYsQnJf.png)![in_table_LBbUbWMy1oCxOhxPWTScK4jTnEb](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_LBbUbWMy1oCxOhxPWTScK4jTnEb.png)![in_table_KQaubbOKyoXpPdxOyYmc3xZpn0g](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_KQaubbOKyoXpPdxOyYmc3xZpn0g.png)- 输入框空态下，若有历史搜索记录则展示搜索历史，若无则展示无历史空态- 搜索历史词条列表：- 列表展示规则：展示最近搜索过的10条记录，顺序按从新到旧排序- 最近搜索过：指通过搜索进入过单词详情页（从搜索历史、生词本进入单词详情页不算）- 词条：- 展示内容：- 单词本身- 单词含义概览：- 按词性聚类，每类展示词性+该词性下所有含义的中文释义- 词性的顺序：含义里先出现的词性在前- 比如“n. 记录，记载；唱片；v. 记录 ”- 超出范围则展示...- 点击词条后，进入对应单词的详情页- 清空历史按钮：- 搜索历史列表不为空时，在列表末尾展示，点击后清空用户所有查单词搜索记录- 列表空态时不展示<br/></td></tr>
+<tr>
+<td>单词详情页<br/></td><td>![in_table_ZClybNN1ToeVTFxf4wFc8a9XnOg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_ZClybNN1ToeVTFxf4wFc8a9XnOg.png)<br/>![in_table_BVKZb5QnJoyil7xVIK5cXxfDn4b](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_BVKZb5QnJoyil7xVIK5cXxfDn4b.png)<br/><br/></td><td>- 页面框架：- 元素：- 返回按钮- 搜索栏- 其他按钮- 加入生词本按钮- 单词详情区域- 展示规则：页面包含2种布局![in_table_NWgsbcDWeooJ1OxezJNcBKaunVd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_NWgsbcDWeooJ1OxezJNcBKaunVd.png)![in_table_DCj8bJ0nBoqrDYx6oCjcPFG5ndf](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_DCj8bJ0nBoqrDYx6oCjcPFG5ndf.png)- 当单词本身没有完全不可见时（全部露出or部分遮挡）：- 顶栏包含返回按钮和搜索栏，吸顶展示- 单词详情和加入生词本按钮正常展示- 当单词完全处于不可见区域时：- 加生词本按钮也收至顶栏，搜索栏缩起，顶栏吸顶展示<br/><br/>- 返回按钮：点击返回上一级页面<br/>- 搜索栏：- 输入框内回显当前单词![in_table_Tdy2bAnxto4ReYxawgYcOac5n6e](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Tdy2bAnxto4ReYxawgYcOac5n6e.png)- 点击输入框，则返回搜索页，输入框内容保持，键盘唤起&光标展示在输入框内容末尾，页面内展示搜索联想- 点击清空按钮，则返回搜索页，输入框内容被清空，键盘唤起&展示光标，页面内展示搜索历史![in_table_OYLMbneqYoaeqDx9UfTcHxCrnsh](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_OYLMbneqYoaeqDx9UfTcHxCrnsh.png)![in_table_VaD4bidfjonT9oxWEcPcJ9DDnQd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_VaD4bidfjonT9oxWEcPcJ9DDnQd.png)<br/>- 其他按钮![in_table_L2Ezb43wxonJ45xrCODcQmPRnfc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_L2Ezb43wxonJ45xrCODcQmPRnfc.png)- 点击后，展示下拉菜单，菜单内本期仅包含反馈入口按钮- 点击反馈入口，打开反馈弹窗（复用学生端全局通用反馈弹窗）![in_table_RoU1bMIOOo9SkLxIMCHc6qERnHh](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_RoU1bMIOOo9SkLxIMCHc6qERnHh.png)- 标题：“问题类型（可多选）”- 标签：按顺序展示以下标签- 释义有错漏，音标有误，发音不准，例句错误，其他内容错误，搜索不到词，操作不顺畅，播放卡顿- 交互：默认不选中，支持多选；选中的标签再次点击则反选- 输入框：- 默认文案“请描述具体问题…”- 字数统计 x/100- 最多输入100字，达到100字后不可继续输入- 提交按钮：- 置灰态：输入框为空- 可点击态：输入框有已输入内容，字数>0- 点击后提交反馈，提交时校验输入框不能只有空格字符- 若只有空格，展示toast“请填写有效文字内容”，弹窗保持、输入框内容清空- 提交完毕后展示反馈成功toast- **反馈时需要上报的字段：**- 所反馈的单词id（有则上报）<br/><br/>- 单词详情- 生产侧维护单词含义条目数：每种词性下，最多展示10条含义；无词性的含义整体算作一个类别- 基础信息：![in_table_Ef4hb9b95oznyMx7rPuc7lAVnEd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Ef4hb9b95oznyMx7rPuc7lAVnEd.png)- 单词本身- 单词标签：非必有，可有多个，依次展示- 本期标签全集共2个，按顺序依次展示：“中考”，“高考”- 音标：可有多个，按/A; B/格式展示- 发音喇叭：点击播放单词读音，若有多个读音则自动连贯播放出来- 释义汇总：![in_table_HVDvbKVLxo5QPBxNQrpcFCRonPc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_HVDvbKVLxo5QPBxNQrpcFCRonPc.png)- 若词条有词性，则按词性聚类展示释义- 词性顺序：- 按词性对应的词频从高到低顺序展示- 词频序号数越小，排序越靠前- 如果没有词频：按以下顺序展示：名词、代词、数词、动词、形容词、副词、介词、连词、冠词、限定词、感叹词、其他。- 每个条目包含：- 词性- 中文释义：该词性下所有释义，按顺序依次展示，释义之间用中文分号隔开- 若词条无词性，则无需展示词性，将所有中文释义一起展示即可- 变形（如有）：- 依次展示该单词所有含义下的所有变形，变形包含 变形类型&变形结果，变形之间用 / 分隔开，变形结果之间用,分隔开；若含义之间变形结果有重复，需要去重- 例如：“过去式 travelled, traveled / 过去分词 travelled, traveled”- 变形的展示顺序如下，没有该类别变形则不展示：原形，第三人称单数，现在分词，过去式，过去分词，比较级，最高级- 例句：- 展示规则：- 例句模块有默认展示高度，超出部分折叠- 支持点击展开全部/收起至默认高度- 内容结构：- 一级分类：按词性展示- 若单词有多种词性则分tab展示- 若单词部分含义有词性、部分含义无词性，所有无词性含义归为一个类别，tab名“其他”- 若单词只有1种词性or无词性，则无需展示tab![in_table_GsZkbyL4xo8PKtxEXu1cbLcgnmd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_GsZkbyL4xo8PKtxEXu1cbLcgnmd.png)![in_table_Cu7Ib5pGvoxAWfxzf6pcM24nnCc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Cu7Ib5pGvoxAWfxzf6pcM24nnCc.png)![in_table_MEQMbhaHzofVsLxzdUrcp9kfnPb](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_MEQMbhaHzofVsLxzdUrcp9kfnPb.png)![in_table_EfyKb7NJJoZLXqxQeKScTq6AnOc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_EfyKb7NJJoZLXqxQeKScTq6AnOc.png)- 二级分类：每种词性下，按词义条目展示；若无词性，直接展示单词下所有词义条目- 若有多个词义条目，条目顺序按词义序号展示，词义条目内展示完整内容详情- 若只有1个词义条目，词义条目内无需再展示词性详情和中文释义，展示例句条目即可![in_table_GAeCb9vvdoax2PxWym0cTPI4npc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_GAeCb9vvdoax2PxWym0cTPI4npc.png)![in_table_Ik3nbNVJhok7vDxL9mrcpwIInFg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Ik3nbNVJhok7vDxL9mrcpwIInFg.png)- 词义条目内容详情：- 词性：非必有，有则展示- 词性详情（即 更细语法分类的词性标签）：非必有，有则展示，比如 [C]、[T]等。- 一个含义下，多个词性详情标签展示例子：n. [C, usually sing., U]- 中文释义- 例句条目：- 每个词义下可能包含多个例句条目- 每个例句条目包含：- 例句英文- 目标词需按特殊样式渲染- 例句中文- 播放喇叭：点击后播放例句英文发音，反复点击则从头播放- 常见用法- 非每个单词必有- 内容：列举常见用法，每种用法包含 用法英文、用法中文![in_table_WjBTbsR6IoUnEgxJsMrcGkmXnDf](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_WjBTbsR6IoUnEgxJsMrcGkmXnDf.png)- 相关词- 非每个单词必有- 内容：- 按近义词、反义词聚类展示- 每一类内，列举类别下所有单词，点击单词可跳转到对应单词的详情页![in_table_H1A7bVemcoT5kxxjt8RcP1Dynkf](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_H1A7bVemcoT5kxxjt8RcP1Dynkf.png)<br/>- 添加生词本按钮：![in_table_DV77bZPe9oUQpbxQ3dQcoKMnn7b](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_DV77bZPe9oUQpbxQ3dQcoKMnn7b.png)![in_table_M0wGbFSqLoGe1NxaYVqcsL7Enbg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_M0wGbFSqLoGe1NxaYVqcsL7Enbg.png)- 布局：包含2种展示位置，单词详情区 和 顶栏- 状态：未加入态、已加入态- 交互：- 未加入态下，点击后，将当前单词加入生词本，按钮变为已加入状态- 按钮支持反点，已加入状态下点击后，将单词移出生词本- 布局1（大按钮）下，加入/移出生词本展示对应toast反馈，布局2不展示反馈：- 加入成功后展示反馈toast（toast动效见UI，“已加入生词本”）- 移除后展示反馈toast（toast动效见UI，“已移出生词本”）![in_table_KazcbjUjGoN84xxRmFAcgNSRnye](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_KazcbjUjGoN84xxRmFAcgNSRnye.png)![in_table_LiYPbFJadoXRW8xEgNGcp6MKnsg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_LiYPbFJadoXRW8xEgNGcp6MKnsg.png)![in_table_JB1gbZwzgo9rUmxDBMbc5nTlnwc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_JB1gbZwzgo9rUmxDBMbc5nTlnwc.png)![in_table_VvI8bbpb0owcb5xnYqsc2CfmnBd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_VvI8bbpb0owcb5xnYqsc2CfmnBd.png)<br/></td></tr>
+<tr>
+<td>生词本页<br/></td><td>![in_table_MqXibipuTo8C6oxyVhPc91dinRD](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_MqXibipuTo8C6oxyVhPc91dinRD.png)<br/><br/></td><td>- 返回按钮：点击后返回上一级页面<br/>- 标题：“我的生词本”<br/>- 计数：共x个生词，x为生词本内单词数量<br/>- 生词表：- 展示范围：该用户全部生词本单词，不区分加入方式和来源- 展示顺序：- 默认按加入时间倒序排列- P1 支持切换排序方式：点击排序按钮打开下拉菜单，点选对应排序方式切换排序- 排序方式：![in_table_V9dDbWFrzoO7MGxEJYFcF9DRnsc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_V9dDbWFrzoO7MGxEJYFcF9DRnsc.png)![in_table_DnNObagclo8r5uxOhqEcgezGne6](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_DnNObagclo8r5uxOhqEcgezGne6.png)- 时间倒序（首次默认）：按单词加入生词本时间倒序排列- 时间正序：按单词加入生词本时间正序排列- 字母排序：按单词字母顺序a到z排列，需按字母聚类展示- 聚类规则：以字母开头的单词按首字母聚类，类别从A到Z顺序排列；非字母开头的单词整体归为一类（用“#”表示分类），排在Z后面。- 类别内排序：- 排序只与单词内字符内容相关，与单词长度无关、大小写不敏感。- 排序时，先取首字符，按标点符号>数字>字母的顺序排列；首字符一致时，判断下一位字符，以此类推。- 例如：A, A-, A1, AA, AAA, Aadhaar, aardvark, aargh, aback, abacus- 下次进入页面时继承前一次离开时排序- 词条：- 词条内容：- 单词- 音标：可有多个，按/A; B/格式展示- 发音喇叭：点击播放单词读音，反复点击喇叭则从头播放- 词义：取词条首个词义（词性+中文释义）- 词条交互：点击词条后，进入该单词详情页，生词本进入的单词详情页不展示搜索框- 加入生词本按钮：- 每个词条均展示该按钮，状态默认为已加入态- 可点击按钮将该单词移出生词本，点击后该词条从列表消失、页面展示toast“已移出生词本”、页面数据刷新（总词数、单词列表均刷新）![in_table_UXZkb5XlDoq5Xwx7POcc4zy1nYc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_UXZkb5XlDoq5Xwx7POcc4zy1nYc.png)![in_table_TUeDbG5uKoElEQxzLPvczFxAnmd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_TUeDbG5uKoElEQxzLPvczFxAnmd.png)<br/></td></tr>
+<tr>
+<td>页面间流转<br/></td><td><br/></td><td>- 查单词首页：- 点击搜索框：进入搜索页- 点击生词本入口：进入生词本页<br/>- 搜索页：- 点击词条/点击键盘搜索键：进入单词详情页- 点击返回：只要从搜索页点返回，无论前置操作是什么，都返回查单词首页<br/>- 单词详情页：- 点击搜索框：进入搜索页- 点击返回：- 如果是从相关词进入的单词详情页，则返回来源单词的详情页（若有多层就层层向上返回）- 否则，返回查单词首页<br/>- 生词本列表页：- 点击词条：进入单词详情页- 点击返回：返回生词本列表页- 点击返回：返回查单词首页<br/></td></tr>
+</table>
+
+![in_table_ZFo6b7qUAoSx8JxIRpDcjOwanpg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_ZFo6b7qUAoSx8JxIRpDcjOwanpg.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### **页面整体结构**
+该界面为一款教育应用的“学习”主页，采用三栏式布局，整体分为顶部状态栏、页面主体和底部导航栏。
+
+---
+#### **1. 顶部状态栏**
+- **时间**: 17:41
+- **通知**: 四个蓝色圆点
+- **系统图标**: Wi-Fi、静音、电池
+
+---
+#### **2. 页面主体**
+##### **2.1 左侧区域**
+- **欢迎语**:
+  - 形象：一个卡通小鹿头像。
+  - 文案：“所有努力都在悄悄发光，别停！”
+- **日期与天气**:
+  - “星期五 >”
+  - “晴 17°C”
+- **日程引导**:
+  - 图标：一个咖啡杯。
+  - 文案：“惜时自律，静待蜕变。规划自己的一天吧！”
+  - **操作按钮**: “+ 添加日程”
+
+##### **2.2 中间区域**
+- **学科卡片列表 (2x3 网格布局)**
+  - **数学**:
+    - 课程名: "函数的概念（一）"
+    - 任务状态: "✅ 0任务"
+    - 装饰: "π" 符号
+  - **英语**:
+    - 课程名: "词汇精讲"
+    - 任务状态: "✅ 0任务"
+    - 装饰: "En" 字母
+  - **语文**:
+    - 课程名: "沁园春·长沙"
+    - 任务状态: "✅ 0任务"
+  - **物理**:
+    - 课程名: "质点 参考系 时间 时刻"
+    - 任务状态: "✅ 0任务"
+  - **化学**:
+    - 课程名: "物质的分类及转化"
+    - 任务状态: "✅ 0任务"
+    - 装饰: "烧瓶" 图形
+  - **生物**:
+    - 课程名: "细胞是生命活动的基本单位"
+    - 任务状态: "✅ 0任务"
+    - 装饰: "DNA" 图形
+- **快捷功能入口 (横向排列)**
+  - “笔记本”
+  - “错题本”
+  - “背单词”
+  - “查单词”
+
+##### **2.3 右侧区域**
+- **功能预告模块**:
+  - 标题: “给你的提升秘籍”
+  - 状态: "功能即将上线 敬请期待～"
+  - 形象：一个正在看书的卡通小鹿。
+
+---
+#### **3. 底部导航栏**
+- **学习 (当前选中)**: 图标为 📚
+- **成长**: 图标为 🏆
+- **我的**: 图标为 👤
+
+【============== 图片解析 END ==============】
+
+![in_table_HSPtbBP4RoE0Eyx21q6cPvHan3M](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_HSPtbBP4RoE0Eyx21q6cPvHan3M.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+该图片为“查单词”功能界面的UI设计稿。
+
+- **页面：查单词**
+    - **顶部状态栏**: 显示设备基本信息。
+        - 时间: `7:35`
+        - 日期: `Mon Jun 3`
+        - 电量: `100%`
+    - **导航栏**:
+        - **左侧**: 返回按钮。
+        - **中间**: 页面标题“查单词”。
+        - **右侧**: “生词本”功能入口。
+    - **核心功能区**:
+        - **搜索框**:
+            - 提示文案: `输入英文或中文...`
+            - 右侧包含一个搜索图标。
+    - **底部信息区**:
+        - 提示文案: `词库已收录 17273 条权威内容`
+
+【============== 图片解析 END ==============】
+
+![in_table_IqpVbXKeKoav7Jx6WCYcXSLqnOr](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_IqpVbXKeKoav7Jx6WCYcXSLqnOr.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+*   **页面整体结构：** 这是一个在平板设备上进行的英文单词搜索界面，由顶部状态栏、中部内容区和底部键盘区组成。
+    *   **顶部状态栏:**
+        *   左侧显示：时间 `7:35` 和日期 `Mon Jun 3`。
+        *   右侧显示：Wi-Fi信号图标和电池状态 `100%`。
+    *   **中部内容区:**
+        *   **导航与搜索输入:**
+            *   **返回按钮:** 位于左上角的 `<` 图标。
+            *   **搜索框:**
+                *   已输入文本: `red`
+                *   **清空按钮:** 位于输入框右侧的 `×` 图标。
+        *   **搜索结果列表:**
+            *   **结果1:** `red` 及其释义 `adj. 红的，红色的；（毛发）红褐色的；（脸）涨红的`。
+            *   **结果2:** `reduce` 及其释义 `v. 减少，降低`，并带有一个 `最近查过` 的标签。
+            *   **结果3:** `redundant` 及其释义 `adj. 多余的，累赘的`。
+    *   **底部键盘区:**
+        *   **键盘布局:** 英文QWERTY键盘。
+        *   **功能键:**
+            *   `?123`: 数字/符号切换键。
+            *   `中/英`: 中/英文输入法切换键。
+            *   `搜索`: 蓝色的确认搜索按钮。
+            *   其他：Shift键、删除键、表情符号键、空格键等标准按键。
+
+【============== 图片解析 END ==============】
+
+![in_table_NvCTbDdUjomb3mxpVYRcJV2Jnqb](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_NvCTbDdUjomb3mxpVYRcJV2Jnqb.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+该界面是一个查词或搜索功能的初始状态，整体布局自上而下分为三个主要区域：导航与状态区、内容区和输入区。
+
+### 1. 导航与状态区
+此区域位于界面最顶部，包含系统状态栏和应用导航栏。
+*   **系统状态栏**
+    *   **左侧**: 显示当前时间与日期 `7:35 Mon Jun 3`。
+    *   **右侧**: 显示 Wi-Fi 连接状态和电池电量 `100%`。
+*   **应用导航栏**
+    *   **返回按钮**: 位于左侧，图标为 `<`。
+    *   **搜索框**: 位于中央，是主要交互元素。
+        *   **提示文本 (Placeholder)**: `输入英文或中文...`，引导用户输入。
+        *   **光标**: 处于激活状态，表示已准备好接收输入。
+
+### 2. 内容区
+此区域位于导航栏下方、键盘上方，用于显示核心内容。
+*   **空状态提示**: 居中显示文本 `暂无查词历史`，表明当前没有历史搜索记录。
+
+### 3. 输入区
+此区域位于界面底部，由一个全尺寸的虚拟键盘组成，用于文本输入。
+*   **键盘工具栏**: 位于字母键上方。
+    *   **左侧**: 网格图标，通常用于切换键盘类型或布局。
+    *   **右侧**: 向下箭头图标，用于收起键盘。
+*   **键盘主体 (QWERTY布局)**
+    *   **字符与数字键**: 包含标准英文字母键和顶部 `0-9` 数字行。
+    *   **功能键**:
+        *   左下角 `?123`: 用于切换到数字及符号键盘。
+        *   `中/英`: 用于切换中英文输入法。
+        *   **空格键**: 中间包含一个麦克风图标，支持语音输入。
+        *   右下角 `搜索`: 蓝色的高亮按键，作为执行搜索操作的确认按钮。
+
+【============== 图片解析 END ==============】
+
+![in_table_XS28b1wH3oLPQIxdhh6cGwoMnBe](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_XS28b1wH3oLPQIxdhh6cGwoMnBe.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+该图片为一款应用在平板设备上的搜索界面，其主要元素构成如下：
+
+*   **状态栏**
+    *   左侧显示时间：`7:35 Mon Jun 3`
+    *   右侧显示网络信号满格，电量 `100%`
+
+*   **主内容区**
+    *   **顶部导航**:
+        *   返回按钮
+    *   **搜索框**:
+        *   输入内容: `red`
+        *   清空输入按钮
+    *   **搜索结果/建议列表**:
+        *   第一条: `red` adj. 红的，红色的；（毛发）红褐色的；（脸）涨红的
+        *   第二条: `reduce` v. 减少，降低
+            *   右侧附有灰色标签：“最近查过”
+        *   第三条: `redundant` adj. 多余的，累赘的
+
+*   **虚拟键盘区**
+    *   **布局**: QWERTY 英文键盘布局。
+    *   **功能键**:
+        *   左下角：`?123`（切换至数字/符号）
+        *   `中/英`（中英文切换）
+        *   表情符号键
+        *   右下角：蓝色的“搜索”按钮
+
+【============== 图片解析 END ==============】
+
+![in_table_RbpfboLhioEkpux2hZuczWH4noe](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_RbpfboLhioEkpux2hZuczWH4noe.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面整体结构
+
+该界面是一个移动应用页面，可能为词典或翻译工具，自上而下由**顶部状态栏**、**导航与搜索区**、**内容区**和**底部操作区**组成。
+
+### 2. 关键元素解析
+
+#### 2.1. 顶部状态栏
+- **左侧**: 显示当前时间 `7:35` 和日期 `Mon Jun 3`。
+- **右侧**: 显示系统状态，包括 Wi-Fi 信号图标和电量 `100%`。
+
+#### 2.2. 导航与搜索区
+- **返回按钮**: 位于左上角，图标为 `<`。
+- **搜索框**: 位于导航栏中央，内部有占位提示文字 `输入英文或中文...`。
+
+#### 2.3. 内容区：历史记录列表
+- 该区域展示了用户的搜索历史记录，每个记录项前都有一个时钟图标。
+- **历史记录项**:
+  - `aloe n. 尸会`
+  - `tang n. (强烈的)味道; 特性`
+  - `iterate v. 反复说; 重复; 重做`
+  - `reduce v. 减少`
+  - `simmer down 被煮至浓缩; 冷静下来; 总结来说`
+  - `palate n. 味觉; 品味`
+  - `feijoa n. 菲油果`
+
+#### 2.4. 底部操作区
+- **清空历史按钮**: 位于列表下方，由一个垃圾桶图标和文字 `清空历史` 组成。
+
+【============== 图片解析 END ==============】
+
+![in_table_Ob43bGSoeoFIHix2xwAcoFjtnxh](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Ob43bGSoeoFIHix2xwAcoFjtnxh.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 页面整体结构
+
+该界面是一个横屏平板设备上的词典或搜索应用界面，自上而下由**状态栏**、**内容区**和**键盘区**三部分构成。
+
+#### 1. 状态栏 (Top Bar)
+- **左侧**: 显示时间 `7:35` 和日期 `Mon Jun 3`。
+- **右侧**: 显示电量 `100%`。
+
+#### 2. 内容区 (Content Area)
+- **导航与搜索栏**:
+    - **返回按钮**: 位于左上角。
+    - **搜索框**:
+        - **输入内容**: `red`
+        - **清除按钮**: 位于输入框右侧。
+- **搜索结果/建议列表**:
+    - `red` adj. 红的，红色的；（毛发）红褐色的；（脸）涨红的
+    - `reduce` v. 减少，降低
+        - **标签**: 右侧附有“最近查过”灰色标签。
+    - `redundant` adj. 多余的，累赘的
+
+#### 3. 键盘区 (Keyboard Area)
+- **布局**: 标准 QWERTY 英文键盘布局。
+- **功能键**:
+    - **左侧**: Shift键、数字/符号切换键(`?123`)、中/英文切换键。
+    - **右侧**: 删除键、蓝色高亮的“搜索”键。
+    - **底部**: 表情符号键、麦克风（语音输入）键。
+
+【============== 图片解析 END ==============】
+
+![in_table_VxfHbWlFPodhvsxo3Gfc0OsdnUe](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_VxfHbWlFPodhvsxo3Gfc0OsdnUe.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面整体结构
+
+这是一个单词查询结果页面的UI界面，查询的单词为“record”。页面从上到下由“顶部导航栏”、“单词释义区”和“经典例句区”三部分组成。
+
+### 2. 关键元素与组成部分
+
+#### 2.1. 顶部导航栏
+
+*   **返回按钮**：位于左上角，图标为向左的箭头。
+*   **搜索框**：
+    *   **输入内容**：record
+    *   **清除按钮**：位于搜索框右侧，图标为“x”。
+*   **更多操作**：位于右上角，图标为三个垂直的点。
+
+#### 2.2. 单词释义区
+
+*   **单词本身**：`record`
+*   **收藏按钮**：位于单词右侧，图标为空心五角星。
+*   **音标与发音**：
+    *   音标：`/ˈrekəːd; rɪˈkɔːd /`
+    *   发音按钮：位于音标右侧，图标为喇叭。
+*   **词性与释义**：
+    *   **n.** 记录, 记载; 唱片
+    *   **v.** 记录; 录制
+*   **单词形态**：
+    *   复数：records
+    *   第三人称单数：records
+    *   现在分词：recording
+    *   过去时：recorded
+    *   过去分词：recorded
+
+#### 2.3. 经典例句区
+
+*   **标题**：经典例句
+*   **词性筛选标签**：
+    *   **名词**：选中状态。
+    *   **动词**：未选中状态。
+*   **例句内容 (名词)**：
+    *   **词性与释义**：n. 记录, 记载
+    *   **英文例句**：Last summer was the wettest on **record**.
+    *   **中文翻译**：去年夏天是有记录以来降雨量最大的。
+    *   **例句发音按钮**：位于右侧，图标为喇叭。
+
+【============== 图片解析 END ==============】
+
+![in_table_RqcNbLxZeoVv44x03lhci5Cinoh](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_RqcNbLxZeoVv44x03lhci5Cinoh.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面整体结构
+
+这是一个在平板设备上展示的单词搜索界面，从上到下由**状态栏**、**搜索功能区**和**虚拟键盘**三部分构成。
+
+### 2. 页面元素详解
+
+#### 2.1. 状态栏 (System Level)
+
+- **左侧**: 显示时间 `7:35` 和日期 `Mon Jun 3`。
+- **右侧**: 显示 Wi-Fi 信号图标和电池状态 `100%`。
+
+#### 2.2. 搜索功能区 (Application Level)
+
+该区域由导航、搜索框和搜索结果列表组成。
+
+- **2.2.1. 导航栏**
+    - **返回按钮**: 位于左上角，图标为 `<`。
+- **2.2.2. 搜索框**
+    - **输入内容**: 已输入文本 `red`。
+    - **清除按钮**: 位于输入框右侧，图标为 `x`。
+- **2.2.3. 搜索结果/建议列表**
+    - **结果 1**: `red` adj. 红的，红色的；（毛发）红褐色的；（脸）涨红的。
+    - **结果 2**: `reduce` v. 减少，降低。
+        - **状态标签**: 右侧附有灰色标签，文字为“最近查过”。
+    - **结果 3**: `redundant` adj. 多余的，累赘的。
+
+#### 2.3. 虚拟键盘
+
+标准的 QWERTY 布局英文输入法键盘。
+
+- **按键区**:
+    - **字符键**: 包含 Q-P, A-L, Z-M 等标准英文字母按键。
+    - **功能键**:
+        - `?123`: 切换到数字及符号键盘。
+        - `中/英`: 中英文输入法切换。
+        - `表情符号`: 切换到表情符号键盘。
+        - `搜索`: 蓝底白字，用于执行搜索操作。
+        - 其他功能键包括大小写切换、删除等。
+
+【============== 图片解析 END ==============】
+
+![in_table_ZfMhbt15DobktUxYV14cqaKOnDd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_ZfMhbt15DobktUxYV14cqaKOnDd.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 界面整体结构
+这是一个词典或搜索功能的“无结果”页面，由顶部状态栏、搜索导航栏和内容区域三部分组成。
+
+### 2. 页面元素及层级关系
+
+*   #### 2.1. 顶部状态栏 (System Status Bar)
+    *   **2.1.1. 时间:** 7:35
+    *   **2.1.2. 日期:** Mon Jun 3
+    *   **2.1.3. 电池电量:** 100%
+
+*   #### 2.2. 搜索导航栏 (Search Navigation Bar)
+    *   **2.2.1. 返回按钮:** 位于导航栏左侧。
+    *   **2.2.2. 搜索框:**
+        *   **2.2.2.1. 当前输入内容:** `bdshhbdsvh`
+        *   **2.2.2.2. 清除按钮:** 位于输入框右侧。
+
+*   #### 2.3. 内容区域 (Content Area)
+    *   **2.3.1. 提示信息:** 居中显示，包含两行文本。
+        *   **2.3.1.1. 主提示:** `Emm...翻遍词典也没找到 "bdshhbdsvh"`
+        *   **2.3.1.2. 操作建议:** `检查拼写后再试试`
+
+【============== 图片解析 END ==============】
+
+![in_table_RVVyb1HCGohPcExQGldctYsQnJf](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_RVVyb1HCGohPcExQGldctYsQnJf.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+*   **整体界面：** 单词搜索页
+    *   **1. 状态栏 (System Level)**
+        *   左侧显示时间信息: `7:35 Mon Jun 3`
+        *   右侧显示网络及电量: Wi-Fi信号图标，`100%`电量
+    *   **2. 应用主体 (App Content)**
+        *   **2.1. 搜索模块**
+            *   **返回按钮:** 位于左上角，图标为 `<`。
+            *   **搜索框:**
+                *   提示文案 (Placeholder): "输入英文或中文..."
+        *   **2.2. 历史记录模块**
+            *   **记录列表:**
+                *   历史记录1: `palate n. 味觉;品味`
+                *   历史记录2: `feijoa n. 菲油果`
+            *   **操作按钮:** `清空历史`按钮
+        *   **2.3. 输入法键盘 (Keyboard)**
+            *   **键盘布局:** 标准QWERTY键盘。
+            *   **功能按键:**
+                *   `?123`: 切换至数字/符号键盘。
+                *   `中/英`: 中英文输入法切换。
+                *   `搜索`: 蓝色高亮执行搜索操作的按键。
+                *   其他标准按键: 空格键（含语音输入图标）、表情符号键、删除键等。
+
+【============== 图片解析 END ==============】
+
+![in_table_LBbUbWMy1oCxOhxPWTScK4jTnEb](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_LBbUbWMy1oCxOhxPWTScK4jTnEb.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+此界面为一款在线教育或词典应用的**搜索历史页面**。
+
+### 1. 页面整体结构
+
+该页面采用标准的移动应用布局，自上而下分为三个主要部分：
+
+*   **顶部导航栏 (Header)**
+*   **中部内容区 (Content Area)**
+*   **底部操作区 (Footer)**
+
+### 2. 页面元素详解
+
+#### 2.1. 顶部导航栏
+
+包含系统状态栏和应用导航功能。
+
+*   **系统状态栏**:
+    *   时间: `7:35`
+    *   日期: `Mon Jun 3`
+    *   系统状态: Wi-Fi信号、电量 `100%`
+*   **应用导航**:
+    *   **返回按钮**: 位于左上角，用于返回上一级页面。
+    *   **搜索框**:
+        *   **占位文本 (Placeholder)**: "输入英文或中文..."
+        *   **当前输入/历史记录**: 搜索框下方显示一条部分可见的记录 `atoe ...`
+
+#### 2.2. 中部内容区
+
+核心区域，以列表形式展示用户的搜索历史。
+
+*   **历史记录列表**:
+    *   列表中的每一项代表一次查询记录，由**历史图标**、**查询词**和**释义**组成。
+    *   **列表项详情**:
+        *   `tang`: n. (强烈的)味道；特性
+        *   `iterate`: v. 反复说；重复；重做
+        *   `reduce`: v. 减少
+        *   `simmer down`: 被煮至浓缩；冷静下来；总结来说
+        *   `palate`: n. 味觉；品味
+        *   `feijoa`: n. 菲油果
+
+#### 2.3. 底部操作区
+
+提供对历史记录的管理功能。
+
+*   **"清空历史" 按钮**:
+    *   包含一个垃圾桶图标和 "清空历史" 文字，用于清除所有搜索记录。
+
+【============== 图片解析 END ==============】
+
+![in_table_KQaubbOKyoXpPdxOyYmc3xZpn0g](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_KQaubbOKyoXpPdxOyYmc3xZpn0g.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+该界面为一个横向布局的查词功能初始页面，其核心元素结构如下：
+
+*   **系统状态栏 (顶部)**
+    *   **时间与日期**: `7:35 Mon Jun 3`
+    *   **设备状态**: 电池电量 `100%`
+
+*   **应用界面 (中部)**
+    *   **导航与搜索区**:
+        *   **返回按钮**: 位于左上角。
+        *   **搜索输入框**: 包含占位提示文案 “输入英文或中文...”。
+    *   **内容区**:
+        *   **空状态提示**: 页面中央显示文字 “暂无查词历史”。
+
+*   **输入键盘 (底部)**
+    *   **键盘布局**: 标准 `QWERTY` 字母布局。
+    *   **功能按键**:
+        *   **输入法切换**: `中/英` 键。
+        *   **符号切换**: `?123` 键。
+        *   **执行操作**: 蓝色的 `搜索` 键。
+
+【============== 图片解析 END ==============】
+
+![in_table_ZClybNN1ToeVTFxf4wFc8a9XnOg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_ZClybNN1ToeVTFxf4wFc8a9XnOg.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面概览
+这是一个单词学习应用的单词详情页，展示了单词“record”的详细信息。
+
+### 2. 页面元素层级结构
+
+*   **顶部栏**
+    *   **系统状态栏**: 包含时间 `7:35 Mon Jun 3` 和电量 `100%`。
+    *   **应用导航栏**:
+        *   **返回按钮**: 页面左上角。
+        *   **搜索框**: 包含已输入词汇 `record` 和清除按钮。
+        *   **更多操作按钮**: 页面右上角。
+
+*   **单词核心信息**
+    *   **单词**: `record`
+    *   **收藏按钮**: 单词右侧的五角星图标。
+    *   **音标与发音**:
+        *   音标: `/ˈrekəːd; rɪˈkɔːd/`
+        *   附带一个发音播放图标。
+    *   **词性释义**:
+        *   **名词 (n.)**
+            *   中文释义: 记录, 记载; 唱片
+            *   名词复数: `records`
+        *   **动词 (v.)**
+            *   中文释义: 记录; 录制
+            *   动词变位: 第三人称单数 `records` / 现在分词 `recording` / 过去时 `recorded` / 过去分词 `recorded`
+
+*   **经典例句模块**
+    *   模块标题: `经典例句`
+    *   **词性筛选标签**:
+        *   `名词`: 当前选中项。
+        *   `动词`: 未选中项。
+    *   **例句详情 (名词)**:
+        *   释义语境: `n. 记录, 记载`
+        *   英文例句: `Last summer was the wettest on record.`
+        *   中文翻译: `去年夏天是有记录以来降雨量最大的。`
+        *   附带一个例句发音播放图标。
+
+【============== 图片解析 END ==============】
+
+![in_table_BVKZb5QnJoyil7xVIK5cXxfDn4b](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_BVKZb5QnJoyil7xVIK5cXxfDn4b.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 单词详情页：record
+
+#### 1. 单词及基本释义
+*   **单词**: record
+*   **适用范围标签**: 中考、高考
+*   **发音**: `/'rekɔːd; rɪ'kɔːd/` (包含发音播放按钮)
+*   **词性与释义**:
+    *   **n.** (名词): 记录, 记载; 唱片
+        *   **复数**: records
+    *   **v.** (动词): 记录; 录制
+        *   **词形变化**: 第三人称单数 records / 現在分词 recording / 过去时 recorded / 过去分词 recorded
+
+#### 2. 经典例句
+*   包含“名词”和“动词”两个切换标签，当前选中“名词”标签。
+*   **n.[C] 记录，记载**
+    *   **例句1**:
+        > Last summer was the wettest on **record**.
+        > 去年夏天是有记录以来降雨量最大的。
+    *   **例句2**:
+        > The world **record** stood for 20 years.
+        > 那项世界纪录20年未被打破。
+    *   **例句3**:
+        > Teachers must keep a **record** of students' attendances.
+        > 老师必须记录学生的出勤情况。
+*   **n.[C] 唱片**
+    *   **例句1**:
+        > The **record** was a bootleg.
+        > 这张唱片是私货。
+    *   **例句2**:
+        > Her death was confirmed by Gregor Benko, a piano historian, **record** producer and family friend.
+        > 身为钢琴史学家、音乐人和她世交的Gregor Benko证实了她的死讯。
+*   **交互**: 包含“收起例句”的折叠控件。
+
+#### 3. 常见用法
+*   **on record**: 有记录的, 公开的
+*   **off the record**: 非正式的, 不公开的
+*   **medical record**: 病历卡; 病史档案
+*   **break a record**: 打破纪录
+*   **criminal record**: 犯罪记录
+
+#### 4. 相关词
+*   **近义词**: evidence, number, preserve, put down, indicate
+*   **反义词**: erase, delete
+
+【============== 图片解析 END ==============】
+
+![in_table_NWgsbcDWeooJ1OxezJNcBKaunVd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_NWgsbcDWeooJ1OxezJNcBKaunVd.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面整体结构
+该界面为单词“record”的详情页，自上而下由**系统状态栏**、**应用导航栏**和**内容区**三部分组成。
+
+- **1.1. 系统状态栏**: 显示设备基本信息。
+- **1.2. 应用导航栏**: 提供页面返回和搜索功能。
+- **1.3. 内容区**: 展示单词的核心信息，包含词义、发音、词形变化及例句。
+
+### 2. 页面元素详解
+
+#### 2.1. 系统状态栏
+- **时间与日期**: `7:35 Mon Jun 3`
+- **电池状态**: `100%`
+
+#### 2.2. 应用导航栏
+- **返回按钮**: 位于左上角。
+- **搜索框**:
+    - **当前搜索词**: `record`
+    - **清除按钮**: `x`
+- **收藏按钮**: 位于单词右侧的星形图标。
+- **更多操作**: 位于右上角的三点图标。
+
+
+#### 2.3. 内容区
+##### 2.3.1. 单词主体
+- **单词**: `record`
+- **音标与发音**: `/'rekɔːd; rɪ'kɔːd /`，附带一个可点击的发音图标 `🎧`。
+
+##### 2.3.2. 词性与释义
+- **名词 (n.)**:
+    - **释义**: `记录, 记载; 唱片`
+    - **词形**: `复数 records`
+- **动词 (v.)**:
+    - **释义**: `记录; 录制`
+    - **词形**: `第三人称单数 records / 现在分词 recording / 过去时 recorded / 过去分词 recorded`
+
+##### 2.3.3. 经典例句模块
+- **模块标题**: `经典例句`
+- **词性切换标签**:
+    - `名词` (当前选中)
+    - `动词`
+- **例句内容 (当前展示名词用法)**:
+    - **对应释义**: `n. 记录, 记载`
+    - **英文句子**: `Last summer was the wettest on record.`
+    - **中文翻译**: `去年夏天是有记录以来降雨量最大的。`
+    - **例句发音**: 句子末尾的发音图标。
+
+【============== 图片解析 END ==============】
+
+![in_table_DCj8bJ0nBoqrDYx6oCjcPFG5ndf](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_DCj8bJ0nBoqrDYx6oCjcPFG5ndf.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面整体结构
+该界面为单词“record”的详情页，由顶部栏和内容区构成。
+
+*   **顶部栏**:
+    *   **左侧**: 返回图标。
+    *   **中间**: 搜索框，内含当前词“record”及清除按钮。
+    *   **右侧**: 更多操作图标。
+*   **内容区**: 包含“单词释义”和“常见用法”两个信息模块。
+
+### 2. 内容区详细解析
+
+#### 2.1 单词释义模块
+*   **单词**: `record`，旁边有表示收藏的`☆`图标。
+*   **词性与释义**:
+    *   `n.` 唱片
+*   **例句**:
+    *   **例句 1**:
+        *   英文: "The **record** was a bootleg."
+        *   中文: "这张唱片是私货。"
+        *   附带发音图标。
+    *   **例句 2**:
+        *   英文: "Her death was confirmed by Gregor Benko, a piano historian, **record** producer and family friend."
+        *   中文: "身为钢琴史学家、音乐人和她世交的Gregor Benko证实了她的死讯。"
+        *   附带发音图标。
+
+#### 2.2 常见用法模块
+*   **模块标题**: 常见用法
+*   **短语列表** (两列展示):
+    *   `on record`: 有记录的, 公开的
+    *   `off the record`: 非正式的, 不公开的
+    *   `medical record`
+    *   `break a record`: 打破纪录
+    *   `criminal record`: 犯罪记录
+
+【============== 图片解析 END ==============】
+
+![in_table_Tdy2bAnxto4ReYxawgYcOac5n6e](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Tdy2bAnxto4ReYxawgYcOac5n6e.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+该图片展示了一个标准的UI搜索输入框组件，其关键元素解析如下：
+
+*   **搜索框容器 (Input Field Container)**
+    *   **样式**: 采用圆角矩形设计，背景色为淡粉橙色调。
+    *   **组成部分**:
+        *   **文本输入区 (Text Area)**:
+            *   **内容**: 框内左侧显示占位符或已输入的文本“record”。在教育场景下，这可能用于搜索课程录播（recordings）、学习记录（learning records）等。
+        *   **清除按钮 (Clear Button)**:
+            *   **位置**: 位于输入框的最右侧。
+            *   **样式**: 一个灰色的圆形图标，内部包含一个“×”符号。
+            *   **功能**: 用于一键清除当前输入框内的所有文本。
+
+【============== 图片解析 END ==============】
+
+![in_table_OYLMbneqYoaeqDx9UfTcHxCrnsh](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_OYLMbneqYoaeqDx9UfTcHxCrnsh.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面整体结构
+
+该界面是一个典型的搜索页面，在平板设备（横屏模式）上呈现，自上而下分为三个核心区域：
+- **顶部状态/导航栏**：显示系统信息和页面核心操作。
+- **中部内容区**：显示搜索结果。
+- **底部输入键盘区**：提供用户输入功能。
+
+### 2. 页面元素及层级关系
+
+#### 2.1. 顶部状态/导航栏
+
+- **2.1.1. 系统状态信息（OS Level）**
+  - **时间与日期**：`7:35 Mon Jun 3`
+  - **系统图标**：信号、Wi-Fi、`100%` 电池电量及充电状态。
+- **2.1.2. 应用内导航与操作（App Level）**
+  - **返回按钮**：位于左上角，图标为向左箭头 `<`。
+  - **搜索框**：
+    - **输入内容**：已输入 "red"。
+    - **清除按钮**：位于输入框右侧，图标为 `x`，用于一键清空输入内容。
+
+#### 2.2. 中部内容区
+
+- **2.2.1. 搜索建议/结果列表**：根据输入框内容 "red" 实时展示的关联词条。
+  - **词条 1**：`red`
+    - **释义**：`adj. 红的，红色的；（毛发）红褐色的；（脸）涨红的`
+  - **词条 2**：`reduce`
+    - **释义**：`v. 减少，降低`
+    - **状态标签**：`最近查过`，表明该词条属于用户的历史搜索记录。
+  - **词条 3**：`redundant`
+    - **释义**：`adj. 多余的，累赘的`
+
+#### 2.3. 底部输入键盘区
+
+- **2.3.1. 键盘主体**：标准 QWERTY 布局的英文输入键盘。
+- **2.3.2. 功能键**：
+  - **模式切换键**：
+    - `?123`: 切换到数字及符号键盘。
+    - `中/英`: 切换中英文输入法。
+  - **操作键**：
+    - **搜索**：蓝色高亮按键，用于提交搜索请求。
+    - **空格键**：包含一个麦克风图标，可能集成语音输入功能。
+    - **退格键**。
+    - **Shift键**。
+  - **内容键**：
+    - **表情符号键**。
+
+【============== 图片解析 END ==============】
+
+![in_table_VaD4bidfjonT9oxWEcPcJ9DDnQd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_VaD4bidfjonT9oxWEcPcJ9DDnQd.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 整体界面结构
+该界面是一个典型的搜索页面，由 **状态栏**、**内容区** 和 **键盘区** 三部分组成。
+
+#### 1.1. 状态栏 (Status Bar)
+*   **左侧**: 显示时间 `7:35` 和日期 `Mon Jun 3`。
+*   **右侧**: 显示 Wi-Fi 信号图标和电池电量 `100%`。
+
+#### 1.2. 内容区 (Content Area)
+*   **导航/搜索栏**:
+    *   **返回按钮**: 位于左上角，图标为 `<`。
+    *   **搜索框**: 位于导航栏中央，内部提示文字 (Placeholder) 为 `输入英文或中文...`。
+*   **搜索历史记录**:
+    *   **历史列表**:
+        *   记录1: `palate n. 味觉; 品味`
+        *   记录2: `feijoa n. 菲油果`
+    *   **操作按钮**:
+        *   `清空历史` 按钮，位于历史列表下方。
+
+#### 1.3. 键盘区 (Keyboard Area)
+*   **键盘类型**: 标准QWERTY布局的英文输入键盘。
+*   **主要按键**:
+    *   字母键: `Q` 到 `P`, `A` 到 `L`, `Z` 到 `M`。
+    *   功能键:
+        *   `?123`: 切换到数字/符号键盘。
+        *   `中/英`: 中英文输入法切换。
+        *   `空格键`: 中间带有麦克风图标，支持语音输入。
+        *   `搜索`: 位于右下角，用于执行搜索操作。
+        *   其他: `删除`、`Shift`、`表情`、`标点`等。
+
+【============== 图片解析 END ==============】
+
+![in_table_L2Ezb43wxonJ45xrCODcQmPRnfc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_L2Ezb43wxonJ45xrCODcQmPRnfc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 页面整体结构
+这是一个移动端应用的界面截图，整体布局从上至下可分为三个主要部分：顶部状态栏、中部搜索栏区域、右下角悬浮按钮。
+
+### 1. 顶部状态栏
+- **左侧**：显示时间和日期，内容为 “7:35 Mon Jun 3”。
+- **右侧**：显示系统状态图标，包括信号强度和电池电量，电量为 “100%”。
+
+### 2. 中部搜索栏区域
+- **左侧**：一个向左的箭头图标，通常表示“返回”操作。
+- **中间**：一个搜索输入框。
+    - **输入内容**：已输入文本 “bdshhbdsvh”。
+    - **框内右侧**：一个 "x" 图标，用于清除输入框内的所有文本。
+- **右侧**：一个由三个垂直点组成的图标，通常表示“更多选项”。
+
+### 3. 右下角悬浮按钮
+- 该按钮为一个白色圆角矩形。
+- **图标**：按钮左侧有一个对话气泡内含感叹号的图标。
+- **文案**：按钮上的文字为 “问题反馈”。
+
+【============== 图片解析 END ==============】
+
+![in_table_RoU1bMIOOo9SkLxIMCHc6qERnHh](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_RoU1bMIOOo9SkLxIMCHc6qERnHh.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+该图片展示了一个“问题反馈”弹窗界面的设计。
+
+*   **主模块：问题反馈弹窗**
+    *   **顶部**：
+        *   **标题**：`问题反馈`
+        *   **操作**：右上角包含一个 `X` 形的关闭按钮。
+    *   **内容区域**：
+        *   **模块一：问题类型选择**
+            *   **标题**：`问题类型 (可多选)`
+            *   **选项**：提供五个可点击的标签按钮供用户选择。
+                *   `题干有误`
+                *   `选项有误`
+                *   `答案有误`
+                *   `答案不唯一`
+                *   `解析有误`
+        *   **模块二：问题描述填写**
+            *   **标题**：`填写问题`
+            *   **输入区域**：一个文本输入框。
+                *   **提示文本 (Placeholder)**：`请描述具体问题...`
+                *   **字数统计**：右下角显示 `0/100`，表示当前输入0字符，上限为100字符。
+    *   **底部**：
+        *   **操作**：一个居中的 `提交` 按钮。
+
+【============== 图片解析 END ==============】
+
+![in_table_Ef4hb9b95oznyMx7rPuc7lAVnEd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Ef4hb9b95oznyMx7rPuc7lAVnEd.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+此图片为在线教育产品中单个单词的展示UI模块，其核心元素构成如下：
+
+*   **单词展示模块 (Word Display Module)**
+    *   **单词主体 (Word Body)**:
+        *   单词: `record`
+    *   **考纲标签 (Exam Syllabus Tags)**: 用于标示该单词在不同考试大纲中的重要性。
+        *   标签1: `中考`
+        *   标签2: `高考`
+    *   **发音信息 (Pronunciation Information)**:
+        *   **音标 (Phonetic Script)**: `/ˈrekəːd; rɪˈkɔːd/`
+        *   **发音播放控件 (Audio Playback Control)**: 一个可点击的喇叭图标，用于播放单词的真人发音。
+
+【============== 图片解析 END ==============】
+
+![in_table_HVDvbKVLxo5QPBxNQrpcFCRonPc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_HVDvbKVLxo5QPBxNQrpcFCRonPc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+此图片为在线教育产品中关于英文单词 "record" 的内容展示。
+
+### 1. 关键元素层级结构
+
+- **单词 (Word): record** (隐含主题)
+    - **词性与释义 (Part of Speech & Definition)**
+        - **n. (名词)**: 记录, 记载; 唱片
+        - **v. (动词)**: 记录; 录制
+    - **词形变化 (Inflections)**
+        - **复数**: records
+        - **第三人称单数**: records
+        - **现在分词**: recording
+        - **过去时**: recorded
+        - **过去分词**: recorded
+
+### 2. 信息结构流程图 (Mermaid)
+
+```mermaid
+graph TD
+    A(单词: record) --> B(词性与释义);
+    A --> C(词形变化);
+
+    subgraph 词性与释义
+        B --> B1(n. 名词);
+        B --> B2(v. 动词);
+        B1 --> B1_Def["记录, 记载; 唱片"];
+        B2 --> B2_Def["记录; 录制"];
+    end
+
+    subgraph 词形变化
+        C --> C1(复数: records);
+        C --> C2(第三人称单数: records);
+        C --> C3(现在分词: recording);
+        C --> C4(过去时: recorded);
+        C --> C5(过去分词: recorded);
+    end
+```
+【============== 图片解析 END ==============】
+
+![in_table_GsZkbyL4xo8PKtxEXu1cbLcgnmd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_GsZkbyL4xo8PKtxEXu1cbLcgnmd.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+# 单词详情页
+
+这是一个展示单词“record”详细信息的界面。
+
+- **单词及发音**
+    - **单词：** `record`
+    - **收藏按钮：** 右上角的☆形图标
+    - **音标与发音：** 包含两种发音的音标 `/'rekɔːd; rɪ'kɔːd /` 及一个发音播放图标
+- **词性与释义**
+    - **n. (名词)：** 记录，记载；唱片
+    - **v. (动词)：** 记录；录制
+- **单词形态**
+    - **复数：** records
+    - **第三人称单数：** records
+    - **现在分词：** recording
+    - **过去时：** recorded
+    - **过去分词：** recorded
+- **经典例句模块**
+    - **模块标题：** 经典例句
+    - **词性切换页签：**
+        - **名词** (当前选中)
+        - **动词**
+    - **例句内容 (名词释义下)：**
+        - **当前释义：** n. 记录, 记载
+        - **英文例句：** Last summer was the wettest on **record**.
+        - **中文翻译：** 去年夏天是有记录以来降雨量最大的。
+        - **例句发音：** 右侧的发音播放图标
+
+【============== 图片解析 END ==============】
+
+![in_table_Cu7Ib5pGvoxAWfxzf6pcM24nnCc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Cu7Ib5pGvoxAWfxzf6pcM24nnCc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+此界面为一个在线词典的单词详情页，用于展示单词“nowadays”的释义和用法。页面结构层级如下：
+
+*   **单词及收藏模块**
+    *   **单词名称**: `nowadays`
+    *   **收藏状态/操作**:
+        *   状态文本: `已加入生词本`
+        *   状态图标: 一个高亮的黄色星形图标
+
+*   **发音模块**
+    *   **音标**: `/'naʊədeɪz/`
+    *   **发音按钮**: 一个可点击的喇叭图标
+
+*   **释义模块**
+    *   **词性**: `adv.` (副词)
+    *   **中文释义**: `如今；目前`
+
+*   **例句模块**
+    *   **模块标题**: `经典例句`
+    *   **例句列表**:
+        *   **例句 1**:
+            *   英文: `Nowadays petrol costs too much.`
+            *   中文: `如今的汽油太贵了。`
+            *   发音按钮: 喇叭图标
+        *   **例句 2**:
+            *   英文: `I rarely meet Tony nowadays.`
+            *   中文: `如今他很少去图书馆。`
+            *   发音按钮: 喇叭图标
+        *   **例句 3**:
+            *   英文: `Many shoes nowadays are made of plastic or similar stuff.`
+            *   中文: `现如今，许多鞋子是用塑料或类似材料制成的。`
+            *   发音按钮: 喇叭图标
+
+【============== 图片解析 END ==============】
+
+![in_table_MEQMbhaHzofVsLxzdUrcp9kfnPb](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_MEQMbhaHzofVsLxzdUrcp9kfnPb.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+此图片为一个在线词典或词汇学习应用的界面，展示了短语“take off”的详细信息。
+
+*   **核心词条模块**
+    *   **短语**: `take off`
+    *   **词条功能**:
+        *   发音按钮：位于短语下方。
+        *   收藏按钮：位于页面右上角，以星形图标表示。
+    *   **中文释义**: 脱掉；起飞；(使)离开；突然成功
+
+*   **经典例句模块**
+    *   **模块标题**: 经典例句
+    *   **例句列表**: 包含三个中英双语例句，每个例句均配有发音按钮。
+        *   **例句一**:
+            *   **英文**: The plane **took off** at 11:00 AM, arriving in Venice before half past one.
+            *   **中文**: 飞机于上午11点起飞，并在一点半前到达威尼斯。
+        *   **例句二**:
+            *   **英文**: His professional career began to **take off** after meeting Edith Piaf in 1944.
+            *   **中文**: 1944年遇见伊迪思·比阿夫后，他的职业生涯开始腾飞。
+        *   **例句三**:
+            *   **英文**: He wouldn't **take off** his hat.
+            *   **中文**: 他不愿摘下他的帽子。
+
+【============== 图片解析 END ==============】
+
+![in_table_EfyKb7NJJoZLXqxQeKScTq6AnOc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_EfyKb7NJJoZLXqxQeKScTq6AnOc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 单词详情页
+
+这是一个在线词典的单词详情页，用于展示单词 "record" 的详细信息。页面整体结构自上而下分为三个主要部分：页面头部、单词核心信息区和经典例句区。
+
+#### 1.1. 页面头部
+- **返回按钮**：位于左上角，用于返回上一页。
+- **收藏按钮**：位于右上角，用星形图标 ★ 表示，用于将单词加入收藏。
+- **更多操作按钮**：位于最右上角，由三个点组成。
+
+#### 1.2. 单词核心信息区
+- **单词**: `record`
+- **音标与发音**: `/ 'rekɔːd; rɪ'kɔːd /`，旁边附有发音图标 🎧。
+- **释义**:
+    - `n.` (名词): 记录，记载；唱片
+- **附加说明**:
+    - `这条词义没有词性`
+- **词形变化**:
+    - **复数**: records
+    - **第三人称单数**: records
+    - **现在分词**: recording
+    - **过去时**: recorded
+    - **过去分词**: recorded
+
+#### 1.3. 经典例句区
+- **区域标题**: `经典例句`
+- **词性筛选标签**:
+    - **名词** (当前选中)
+    - **动词**
+    - **其他**
+- **例句详情 (名词)**:
+    - **对应释义**: `n. 记录, 记载`
+    - **英文例句**: Last summer was the wettest on **record**.
+    - **中文翻译**: 去年夏天是有记录以来降雨量最大的。
+    - **例句发音**: 句末附有发音图标 🎧。
+
+【============== 图片解析 END ==============】
+
+![in_table_GAeCb9vvdoax2PxWym0cTPI4npc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_GAeCb9vvdoax2PxWym0cTPI4npc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+该图片为在线词典或单词学习应用的单词详情页UI，展示了单词“record”的详细信息。
+
+*   **一级：页面主体**
+    *   **1. 单词与考纲信息**
+        *   **单词：** `record`
+        *   **考纲标签：** `中考`、`高考`
+        *   **收藏按钮：** 位于右上角的星形图标。
+    *   **2. 发音**
+        *   **音标：** `/'rekɔ:d; rɪ'kɔːd/`
+        *   **发音按钮：** 位于音标旁的喇叭图标。
+    *   **3. 词义与词形变化**
+        *   **名词（n.）**
+            *   **释义：** 记录, 记载; 唱片
+            *   **词形变化：** 复数 `records`
+        *   **动词（v.）**
+            *   **释义：** 记录; 录制
+            *   **词形变化：** 第三人称单数 `records` / 现在分词 `recording` / 过去时 `recorded` / 过去分词 `recorded`
+    *   **4. 经典例句**
+        *   **词性筛选标签：**
+            *   `名词` (当前选中)
+            *   `动词`
+        *   **名词例句列表：**
+            *   **释义分组一：n.[C] 记录，记载**
+                *   **例句1：** `Last summer was the wettest on record.`
+                    *   **翻译：** 去年夏天是有记录以来降雨量最大的。
+                    *   **例句发音按钮：** 喇叭图标。
+                *   **例句2：** `The world record stood for 20 years.`
+                    *   **翻译：** 那项世界纪录20年未被打破。
+                    *   **例句发音按钮：** 喇叭图标。
+                *   **例句3：** `Teachers must keep a record of students' attendances.`
+                    *   **翻译：** 老师必须记录学生的出勤情况。
+                    *   **例句发音按钮：** 喇叭图标。
+            *   **释义分组二：n.[C] 唱片**
+                *   **例句1：** `The record was a bootleg.`
+                    *   **翻译：** 这张唱片是私货。
+                    *   **例句发音按钮：** 喇叭图标。
+                *   **例句2：** `Her death was confirmed by Gregor Benko, a piano historian, record producer and family friend.`
+                    *   **翻译：** 身为钢琴史学家、音乐人和她世交的Gregor Benko证实了她的死讯。
+                    *   **例句发音按钮：** 喇叭图标。
+
+【============== 图片解析 END ==============】
+
+![in_table_Ik3nbNVJhok7vDxL9mrcpwIInFg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_Ik3nbNVJhok7vDxL9mrcpwIInFg.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+此界面为一个单词详情页，其核心功能是展示单词的详细信息。
+
+- **单词详情页 (Word Detail Page)**
+    - **单词主信息区 (Word Main Information)**
+        - **单词名称**: `nowadays`
+        - **音标与发音**:
+            - 音标: `/'naʊədeɪz/`
+            - 发音按钮 (喇叭图标)
+        - **词性与释义**: `adv. 如今；目前`
+        - **收藏状态**:
+            - 状态文本: `已加入生词本`
+            - 状态图标: `★` (黄色星形)
+    - **经典例句区 (Example Sentences Section)**
+        - **区域标题**: `经典例句`
+        - **例句列表**: 包含三个例句，每个例句由以下元素构成：
+            - 英文例句 (关键词 `nowadays` 高亮)
+            - 中文翻译
+            - 例句发音按钮 (喇叭图标)
+            - **例句1**:
+                - 英文: `Nowadays petrol costs too much.`
+                - 中文: `如今的汽油太贵了。`
+            - **例句2**:
+                - 英文: `I rarely meet Tony nowadays.`
+                - 中文: `如今他很少去图书馆。`
+            - **例句3**:
+                - 英文: `Many shoes nowadays are made of plastic or similar stuff.`
+                - 中文: `现如今，许多鞋子是用塑料或类似材料制成的。`
+    - **操作区 (Action Area)**
+        - **展开/收起**: `展开全部 ▼`，用于显示更多内容。
+
+【============== 图片解析 END ==============】
+
+![in_table_WjBTbsR6IoUnEgxJsMrcGkmXnDf](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_WjBTbsR6IoUnEgxJsMrcGkmXnDf.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 整体模块结构
+
+该图片展示了一个在教育产品中用于讲解词汇常见用法的UI内容模块。
+
+*   **模块层级一：标题**
+    *   标题内容为：“常见用法”。
+*   **模块层级二：内容列表**
+    *   该列表以双栏结构展示了与核心词 "record" 相关的短语及其释义。
+    *   **第一列**
+        *   **条目 1**
+            *   英文短语：`on record`
+            *   中文释义：有记录的, 公开的
+        *   **条目 2**
+            *   英文短语：`off the record`
+            *   中文释义：非正式的, 不公开的
+        *   **条目 3**
+            *   英文短语：`medical record`
+            *   中文释义：病历卡; 病史档案
+    *   **第二列**
+        *   **条目 1**
+            *   英文短语：`break a record`
+            *   中文释义：打破纪录
+        *   **条目 2**
+            *   英文短语：`criminal record`
+            *   中文释义：犯罪记录
+
+【============== 图片解析 END ==============】
+
+![in_table_H1A7bVemcoT5kxxjt8RcP1Dynkf](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_H1A7bVemcoT5kxxjt8RcP1Dynkf.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 模块：相关词
+该UI模块用于展示与当前单词相关的词汇信息，由一个主标题和两个内容区域构成。
+
+### 2. 组成部分
+此模块包含两个并列的子部分：
+*   **近义词**
+    *   **内容**: `evidence, number, preserve, put down, indicate`
+*   **反义词**
+    *   **内容**: `erase, delete`
+
+【============== 图片解析 END ==============】
+
+![in_table_DV77bZPe9oUQpbxQ3dQcoKMnn7b](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_DV77bZPe9oUQpbxQ3dQcoKMnn7b.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+*   **页面整体结构**:
+    *   **顶部状态栏**: 位于屏幕最顶端，用于展示系统信息。
+        *   **左侧**: 显示时间与日期，内容为 “7:35 Mon Jun 3”。
+        *   **右侧**: 显示设备状态，包含 Wi-Fi 图标、电量 “100%” 和电池图标。
+    *   **应用内容区**: 状态栏下方的应用主界面。
+        *   **顶部操作栏**:
+            *   **返回图标**: 左侧的 “<” 箭头。
+            *   **搜索框**: 位于中间，包含以下元素：
+                *   **输入文本**: “record”。
+                *   **清除图标**: 输入框内右侧的 “x” 图标。
+            *   **更多操作图标**: 右侧的三个竖排圆点。
+        *   **内容主体区**:
+            *   **核心词汇**: 以大号字体显示文本 “record”。
+            *   **功能按钮**: 位于核心词汇右侧，为一个带有空心五角星 “☆” 图标的按钮。
+
+【============== 图片解析 END ==============】
+
+![in_table_M0wGbFSqLoGe1NxaYVqcsL7Enbg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_M0wGbFSqLoGe1NxaYVqcsL7Enbg.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面整体结构
+该界面为移动端单词查询结果页，自上而下由顶部状态栏、页面导航与操作区、内容展示区组成。
+
+#### 1.1. 顶部状态栏
+显示设备系统信息。
+- **左侧**: 时间 `7:35` 和 日期 `Mon Jun 3`。
+- **右侧**: Wi-Fi 图标和电量 `100%`。
+
+#### 1.2. 页面导航与操作区
+提供页面核心功能。
+- **左侧**:
+    - **返回按钮**: `<` 图标。
+    - **当前单词**: `record`，右侧有一个空心星形 `☆` 图标。
+- **右侧**:
+    - **搜索框**: 包含文本 `record` 和一个清除内容的 `x` 图标。
+    - **更多操作**: `...` (垂直省略号) 图标。
+
+#### 1.3. 内容展示区
+显示单词的释义。
+- **释义内容**: `n. 唱片`。
+
+【============== 图片解析 END ==============】
+
+![in_table_KazcbjUjGoN84xxRmFAcgNSRnye](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_KazcbjUjGoN84xxRmFAcgNSRnye.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+此图片为一个独立的UI组件，具体解析如下：
+
+### 1. 关键元素层级结构
+
+*   **图标按钮 (Icon Button)**: 这是界面的一个可交互元素。
+    *   **按钮容器 (Button Container)**: 按钮的背景和形状。
+        *   **形状**: 圆角矩形。
+        *   **颜色**: 白色。
+        *   **样式**: 带有底部阴影，呈现悬浮的视觉效果。
+    *   **图标 (Icon)**: 按钮内部承载具体含义的图形。
+        *   **类型**: 五角星图标
+        *   **状态**: 线框样式（未填充），通常代表“未收藏”或“未标记”的默认状态。
+        *   **颜色**: 深灰色。
+
+### 2. 组件结构图 (Class Diagram)
+
+```mermaid
+classDiagram
+    direction LR
+    class IconButton {
+        +Container
+        +Icon
+    }
+    class Container {
+        -shape: RoundedRectangle
+        -color: White
+        -style: Floating with Shadow
+    }
+    class Icon {
+        -type: Star
+        -state: Outline (Unselected)
+        -color: Dark Gray
+    }
+    IconButton "1" -- "1" Container : has
+    IconButton "1" -- "1" Icon : has
+```
+
+【============== 图片解析 END ==============】
+
+![in_table_LiYPbFJadoXRW8xEgNGcp6MKnsg](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_LiYPbFJadoXRW8xEgNGcp6MKnsg.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 核心组件概览
+图片展示的是一个操作反馈组件，用于明确告知用户“添加生词”的操作已成功。
+
+### 2. 关键元素构成
+该组件由状态文本和状态图标两部分构成，呈水平布局。
+
+*   **状态文本 (Text Label)**
+    *   **内容:** `已加入生词本`
+    *   **功能:** 文字形式直接说明操作结果。
+
+*   **状态图标 (Icon Button)**
+    *   **图标 (Icon):** 一个黄色的实心五角星。在UI中，实心五角星通常表示“已收藏”或“已标记”的激活状态。
+    *   **容器 (Container):** 一个白色的圆角矩形，带有轻微的底部阴影，使其具有按钮的视觉样式。
+
+### 3. 元素层级与关联
+以下是该组件的层级结构：
+*   **层级 1：** 状态提示组件 (整体)
+    *   **层级 2-1：** 文本标签 ("已加入生词本")
+    *   **层级 2-2：** 图标按钮
+        *   **层级 3-1：** 实心五角星图标
+        *   **层级 3-2：** 白色圆角矩形容器
+
+**关联分析：** 文本标签与图标按钮共同作用，提供双重确认。文本`已加入生词本`提供了明确的信息，而黄色的实心五角星图标则作为一种通用的、快速可识别的视觉语言，强化了“已添加/已收藏”的状态，二者结合为用户提供了清晰、无歧义的操作反馈。
+
+【============== 图片解析 END ==============】
+
+![in_table_JB1gbZwzgo9rUmxDBMbc5nTlnwc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_JB1gbZwzgo9rUmxDBMbc5nTlnwc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 核心元素解析
+
+该图片为一个交互式按钮组件，在产品设计中通常用于触发“收藏”、“标记”或“评级”等操作。
+
+### 2. 组件层级结构
+
+*   **按钮容器 (父级)**
+    *   **形态**：一个水平方向的圆角矩形。
+    *   **颜色**：纯白色。
+    *   **样式**：带有细微的下投影，呈现出立体悬浮的效果，暗示其可交互性。
+*   **图标 (子级)**
+    *   **形态**：一个标准的五角星。
+    *   **颜色**：黄色。
+    *   **位置**：位于按钮容器的中央。
+
+### 3. 元素关联说明
+
+五角星图标内嵌于按钮容器中，共同构成一个完整的功能控件。在互联网教育场景下，该按钮通常关联以下用户行为：
+
+*   **内容收藏**：用户将课程、习题或资料加入个人收藏夹。
+*   **重点标记**：用户标记重点知识或笔记。
+
+【============== 图片解析 END ==============】
+
+![in_table_VvI8bbpb0owcb5xnYqsc2CfmnBd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_VvI8bbpb0owcb5xnYqsc2CfmnBd.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 核心功能：生词本状态变更反馈
+
+该UI组件用于显示用户将某个单词移出生词本后的状态。
+
+### 2. 构成元素
+
+*   **状态文本**
+    *   **内容**：`已移出生词本`
+    *   **目的**：向用户明确传达操作已成功完成的反馈信息。
+*   **功能按钮**
+    *   **外观**：一个带有轻微阴影的白色圆角矩形按钮。
+    *   **图标**：按钮内部包含一个空心五角星（☆）图标。
+    *   **含义**：空心五角星通常代表“未收藏”或“未添加”状态。此状态与左侧“已移出生词本”的文本描述相对应，表明当前单词不在生词本中。用户点击此按钮可能会将单词重新添加回生词本。
+
+【============== 图片解析 END ==============】
+
+![in_table_MqXibipuTo8C6oxyVhPc91dinRD](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_MqXibipuTo8C6oxyVhPc91dinRD.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面概览
+此界面为“我的生词本”功能页，用于展示用户收藏的单词列表。
+
+### 2. 页面元素层级结构
+#### 2.1. 顶部导航区
+- **返回按钮**: 位于左上角，图标为 `<`。
+- **页面标题**: “我的生词本”。
+
+#### 2.2. 列表控制区
+- **单词总数**: “共113词”。
+- **排序方式**: “时间排序 ▼”，表示列表当前按时间顺序排列，且可点击展开其他排序选项。
+
+#### 2.3. 生词列表区
+此区域以卡片形式纵向排列每个生词条目。
+
+##### 2.3.1. 单个生词条目结构
+- **发音**: 左侧的喇叭图标，用于播放单词读音。
+- **单词**: 英文单词本身。
+- **音标**: 紧跟单词后的国际音标。
+- **释义**: 包含词性和中文含义。
+- **收藏状态**: 右侧的黄色五角星图标，表示该单词处于已收藏状态。
+
+##### 2.3.2. 列表内容示例
+- **staple**: `/'steɪpl/ vt. 装订；用订书钉装订`
+- **record**: `/'rekɔːd; rɪ'kɔːd/ n. 记录，记载；唱片`
+- **refrigerator**: `/rɪ'frɪdʒəreɪtər/ vt. 电冰箱`
+- **cask**: `/kæsk/ vt. 大木桶，酒桶`
+- **acorn**: `/'eɪkɜːrn/ vt. 橡果（橡树的种子）`
+- **flask**: `/flæsk/ n. 烧瓶`
+
+【============== 图片解析 END ==============】
+
+![in_table_V9dDbWFrzoO7MGxEJYFcF9DRnsc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_V9dDbWFrzoO7MGxEJYFcF9DRnsc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 一、 页面整体结构
+
+该界面为“我的生词本”，是一个用于展示和管理用户收藏单词的列表页面。
+
+- **顶部导航栏 (Header Bar)**
+    - **返回按钮**：位于左上角，用于返回上一级页面。
+    - **页面标题**：“我的生词本”，居中显示。
+- **内容区域 (Content Area)**
+    - **列表摘要与控件**
+    - **生词列表**
+
+### 二、 元素拆解与关联
+
+1.  **列表摘要与控件**
+    - **单词总数**：位于左侧，显示“共113词”。
+    - **排序方式**：位于右侧，显示“时间排序 ▼”，是一个可交互的排序切换控件。
+
+2.  **生词列表**
+    - 该区域由多个独立的生词卡片纵向排列组成。
+    - **生词卡片 (Word Item)**：每个卡片代表一个单词，包含以下元素：
+        - **发音按钮**：位于最左侧，点击可播放单词读音。
+        - **单词详情**：
+            - **单词 (Word)**：如 `staple`。
+            - **音标 (Phonetics)**：如 `/'steipl/`。
+            - **词性与释义 (Definition)**：如 `vt. 装订；用订书钉装订`。
+        - **标记/收藏图标 (Star Icon)**：位于最右侧，为黄色星标，表示该单词已被收藏或标记。
+
+【============== 图片解析 END ==============】
+
+![in_table_DnNObagclo8r5uxOhqEcgezGne6](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_DnNObagclo8r5uxOhqEcgezGne6.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### 1. 页面整体结构
+该页面为“我的生词本”，用于展示用户收藏的单词。
+
+- **1.1. 导航栏**
+    - **返回按钮**：位于左上角。
+    - **页面标题**：“我的生词本”。
+
+- **1.2. 内容区**
+    - **1.2.1. 单词统计**
+        - 显示总词数：“共113词”。
+    - **1.2.2. 排序控件**
+        - **当前排序方式**：右上角按钮显示“字母排序 ▼”。
+        - **排序选项（弹出层）**：
+            - 时间排序
+            - 字母排序（已选状态）
+    - **1.2.3. 单词列表**
+        - **分组**：按首字母进行分组，如 “A”、“B”。
+        - **单词条目**：每行代表一个单词，包含以下元素：
+            - **发音图标**：用于播放读音。
+            - **单词**：如 `acorn`。
+            - **音标**：如 `/ˈeɪkɔːrn/`。
+            - **词性与释义**：如 `vt. 橡果（橡树的种子）`。
+            - **收藏图标**：右侧的星形图标。
+
+### 2. 列表内容示例
+- **分组 A**
+    - **acorn** /ˈeɪkɔːrn/  vt. 橡果（橡树的种子）
+    - **astronaut** /ˈæstrənɔːt/  n. 宇航员
+    - **awesome** /ˈɔːsəm/  adj. 令人惊叹的，令人敬畏的
+- **分组 B**
+    - **breeze** /briːz/  n. 微风
+    - **brisk** /brɪsk/  adj. 轻快的，（天气）凉爽的
+    - **burst** /bɜːrst/  vt. （使）爆裂，爆炸
+
+【============== 图片解析 END ==============】
+
+![in_table_UXZkb5XlDoq5Xwx7POcc4zy1nYc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_UXZkb5XlDoq5Xwx7POcc4zy1nYc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### **一、 页面整体结构**
+该界面为“我的生词本”功能页面，整体采用自上而下的垂直布局。
+
+*   **顶部导航栏 (Top Navigation Bar)**
+    *   **返回按钮**: 位于左上角，图标为向左的箭头，用于返回上一级页面。
+    *   **页面标题**: 位于顶部中央，文本为“我的生词本”。
+
+*   **主内容区 (Main Content Area)**
+    *   **信息统计与操作区**:
+        *   **单词总数**: 位于列表上方，文本为“共113词”，说明当前生词本收录的单词数量。
+        *   **排序功能**: 位于右上角，按钮文本为“时间排序”，带下拉箭头，表示当前列表按时间排序，并可点击切换其他排序方式。
+    *   **生词列表**:
+        *   以卡片形式纵向排列，每张卡片代表一个单词条目。
+
+### **二、 单词条目元素构成**
+列表中的每个单词条目（以`staple`为例）均由以下元素构成，从左至右排列：
+
+1.  **发音按钮**: 一个扬声器图标，点击可播放单词读音。
+2.  **单词**: 英文单词本身，例如 `staple`。
+3.  **音标**: 单词的音标注释，例如 `/'steipl/`。
+4.  **释义**: 单词的词性和中文含义，例如 `vt. 装订；用订书钉装订`。
+5.  **收藏标记**: 位于条目最右侧的黄色星形图标，表示该单词已被收藏或标记。
+
+【============== 图片解析 END ==============】
+
+![in_table_TUeDbG5uKoElEQxzLPvczFxAnmd](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_TUeDbG5uKoElEQxzLPvczFxAnmd.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+该图片为“已移出生词本”功能界面的UI设计图。
+
+- **页面层级：已移出生词本**
+    - **顶部导航栏 (Navigation Bar)**
+        - **返回按钮**：位于左上角，图标为 `<`。
+        - **页面标题**：居中显示，文案为“已移出生词本”。
+    - **内容区域**
+        - **信息统计与操作栏**
+            - **单词总数**：位于左侧，文案为“共112词”。
+            - **排序方式**：位于右侧，按钮文案为“时间排序 ▼”。
+        - **单词列表**
+            - **单词卡片 (List Item)**：每个卡片代表一个已移除的单词，其构成元素如下：
+                - **发音按钮**：位于最左侧，图标为扬声器。
+                - **单词信息**
+                    - **单词拼写**：如 `staple`。
+                    - **音标**：如 `/'steɪpl/`。
+                    - **词义和词性**：如 `vt. 装订；用订书钉装订`。
+                - **操作按钮**：位于最右侧，图标为黄色的星形。
+
+【============== 图片解析 END ==============】
+
+
+
+#### 5.2 词典数据
+
+1. **词典数据存储和更新**
+
+- 随功能上线交付一期词典内容。
+- 功能上线后，服务端支持在词典内新增词条、删除已有词条、修改已有词条内容字段。具体可变更范围如下：
+
+<table>
+<tr>
+<td>字段<br/></td><td>变更方式<br/></td><td>数据处理方式<br/></td></tr>
+<tr>
+<td rowspan="2">单词条目<br/></td><td>增加：支持新增单词条目<br/></td><td>存量用户：展示最新<br/>增量用户：展示最新<br/></td></tr>
+<tr>
+<td>删除：支持删除单词条目<br/></td><td>存量用户：展示最新<br/>- 搜索历史、生词本数据按最新展示（不展示已删除词条）<br/>增量用户：展示最新<br/></td></tr>
+<tr>
+<td rowspan="9">单词条目下内容<br/></td><td>单词id：**不可变更。**<br/></td><td rowspan="9">存量用户：展示最新<br/>增量用户：展示最新<br/></td></tr>
+<tr>
+<td>单词本身：**必有**，可修改，用于改拼写的场景<br/></td></tr>
+<tr>
+<td>单词发音：<br/>- 音标：**必有，至少有1个、可超过1个，**可修改<br/>- 音频：**必有，至少有1个、可超过1个，**可修改<br/></td></tr>
+<tr>
+<td>单词词频：**不必有，可修改**<br/>- 词性<br/>- 词频序号<br/></td></tr>
+<tr>
+<td>单词含义：**必有，至少有1个、可超过1个，含义内的以下字段可修改**<br/>- 含义序号：必有<br/>- 中文释义：必有<br/>- 词性：不必有<br/>- 词性详情：不必有<br/></td></tr>
+<tr>
+<td>单词变形：**不必有，可修改**<br/>- 变形类型<br/>- 变形结果：有变形类型则必须有对应的变形结果，至少是1个<br/></td></tr>
+<tr>
+<td>**例句：每个含义必有，至少有1个、可超过1个，例句内的以下字段可修改**<br/>- 所属含义序号：必有<br/>- 例句在含义内的顺序：必有<br/>- 例句英文：必有<br/>- 例句中文：必有<br/>- 例句朗读音频：必有<br/></td></tr>
+<tr>
+<td>常见用法：**不必有，可修改**<br/>- 用法英文<br/>- 用法中文<br/></td></tr>
+<tr>
+<td>相关词：**不必有，可修改**<br/>- 相关词类型<br/>- 相关词id<br/>- 相关词英文<br/></td></tr>
+</table>
+
+1. **词典数据结构**
+
+![DGrhwgU5EhEkPUbWSy6cr2r8n2f](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/board_DGrhwgU5EhEkPUbWSy6cr2r8n2f.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN 逻辑图 ==============】
+
+此为“词典词条”的数据结构定义，其层级关系如下：
+
+*   **词典词条**
+    *   **单项**
+        *   **单词本身**
+            *   单词id
+        *   **发音**
+            *   发音 (1..N)
+                *   音标
+                *   汉语拼音
+        *   **词频**
+            *   词频 (1..N)
+                *   词频
+                *   词频单位
+        *   **含义**
+            *   含义 (1..N)
+                *   含义序号
+                *   中文释义
+                *   词性
+                *   词性详情
+                *   **例句**
+                    *   例句 (1..N)
+                        *   原句中文
+                        *   原句英文
+                        *   原句译意说明
+        *   **单词变形**
+            *   变形类型 (1..N)
+                *   变形结果
+                *   变形规则
+        *   **词根词源**
+            *   词法 (1..N)
+                *   用法英文
+                *   用法中文
+        *   **相关词**
+            *   **近义词**
+                *   近义词 (1..N)
+                    *   词源来源
+                    *   词源id
+                    *   词源类型
+            *   **反义词**
+                *   反义词 (1..N)
+                    *   词源来源
+                    *   词源id
+                    *   词源类型
+        *   **词典定制信息**
+            *   标签 (1..N)
+
+【============== 图片解析 END ==============】
+
+
+
+#### 5.3 内容生产需求
+
+[查单词-内容生产需求](https://wcng60ba718p.feishu.cn/wiki/ZCHWwaUytiltEykyXMqcJwdenbc)
+
+### 六、数据需求
+
+#### 6.1 效果追踪
+
+功能渗透率（提交搜索用户数/APP 活跃用户数）
+功能留存（次日、7 日、14 日提交搜索用户留存情况）
+人均查词次数（提交搜索次数/提交搜索用户数）
+
+#### 6.2 数据埋点
+
+<table>
+<tr>
+<td>**页面**<br/></td><td>**动作**<br/></td><td>**事件名**<br/></td><td>**参数**<br/></td><td>**说明**<br/></td><td>**参数类型**<br/></td><td>枚举值<br/></td></tr>
+<tr>
+<tr>
+<tr>
+<tr>
+<td rowspan="5">搜索页<br/>![in_table_CBKGbR0cyoVvgNx6ze9cSz6zn6n](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_CBKGbR0cyoVvgNx6ze9cSz6zn6n.png)<br/>![in_table_IzztbfnH5oKxmpxOroKcaotJn9e](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_IzztbfnH5oKxmpxOroKcaotJn9e.png)<br/><br/></td><td>查单词搜索页浏览<br/></td><td>dictionary_search_view<br/></td><td>enter_from<br/></td><td>进入搜索页的来源入口名<br/></td><td>String<br/></td><td>dictionary homepage 查单词首页<br/>word detail 单词详情页 <br/></td></tr>
+<tr>
+<td rowspan="3">点击提交搜索<br/>（点击词条&键盘回车键，点击回车键时输入内容有中文无反应&输入内容为空无反应则不计入）<br/><br/></td><td rowspan="3">query_submit_click<br/><br/></td><td>query_content<br/><br/></td><td>提交的搜索内容：<br/>- 点击词条就上报词条内容<br/>- 点击回车就上报搜索框输入的内容<br/></td><td>String<br/></td><td><br/></td></tr>
+<tr>
+<td>word_id<br/></td><td>搜索结果的单词id，如有则上报，无则空<br/></td><td>String<br/></td><td><br/></td></tr>
+<tr>
+<td>query_list_sequence<br/></td><td>点击词条时，上报词条在搜索联想列表里的排序序号<br/></td><td>Number<br/></td><td><br/></td></tr>
+<tr>
+<td>点击搜索历史词条<br/></td><td>history_query_click<br/></td><td>word_id<br/></td><td>搜索结果的单词id<br/></td><td>String<br/></td><td><br/></td></tr>
+<tr>
+<td rowspan="7">单词详情页<br/>![in_table_OwFeb3k1Jof0NIxTGu6cYAsfnnc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_OwFeb3k1Jof0NIxTGu6cYAsfnnc.png)<br/><br/></td><td rowspan="2">单词详情页浏览<br/></td><td rowspan="2">dictionary_worddetail_view<br/></td><td>word_id<br/></td><td>单词id<br/></td><td>String<br/></td><td><br/></td></tr>
+<tr>
+<td>enter_from<br/></td><td>进入单词详情页的来源入口名<br/></td><td>String<br/></td><td>search 提交搜索<br/>history 搜索历史<br/>worddetail 单词详情<br/>wordbook 生词本<br/></td></tr>
+<tr>
+<td rowspan="3">退出单词详情页<br/>（返回、点击搜索框回到搜索页）<br/></td><td rowspan="3">dictionary_worddetail_exit<br/><br/></td><td>time_spent_seconds<br/></td><td>单词详情页停留时长（秒）<br/></td><td>Number<br/></td><td><br/></td></tr>
+<tr>
+<td>enter_from<br/></td><td>进入单词详情页的来源入口名<br/></td><td>String<br/></td><td>search 提交搜索<br/>history 搜索历史<br/>worddetail 单词详情<br/>wordbook 生词本<br/></td></tr>
+<tr>
+<td>word_id<br/></td><td>单词id<br/></td><td>String<br/></td><td><br/></td></tr>
+<tr>
+<td rowspan="2">点击播放音频<br/><br/></td><td rowspan="2">detail_audio_play_click<br/></td><td>audio_type<br/></td><td>音频类型<br/></td><td>String<br/></td><td>word 单词音频 <br/>example 例句音频 <br/></td></tr>
+<tr>
+<td>word_id<br/></td><td>单词id<br/></td><td>String<br/></td><td><br/></td></tr>
+<tr>
+<tr>
+<td>点击播放音频<br/></td><td>wordbook_audio_play_click<br/></td><td>word_id<br/></td><td>单词id<br/></td><td>String<br/></td><td><br/></td></tr>
+</table>
+
+![in_table_M04PbepIGolrrCxql4bcDs84nQc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_M04PbepIGolrrCxql4bcDs84nQc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+此界面为“查单词”功能的主页面，其核心构成元素如下：
+
+*   **页面 (Page): 查单词**
+    *   **顶部导航栏 (Top Navigation Bar)**
+        *   **左侧**: 返回按钮，用于返回上一级页面。
+        *   **中间**: 页面标题，显示为“查单词”。
+        *   **右侧**: “生词本”入口，点击可跳转至用户生词本列表。
+    *   **中心内容区 (Main Content Area)**
+        *   **搜索框 (Search Bar)**: 核心交互元件。
+            *   **占位符文本 (Placeholder Text)**: “输入英文或中文...”，提示用户可输入中英文内容进行查询。
+            *   **搜索图标 (Search Icon)**: 位于搜索框右侧。
+    *   **底部信息区 (Footer Information Area)**
+        *   **状态文本 (Status Text)**: “词库已收录 17273 条权威内容”，说明当前词库的数据规模。
+
+【============== 图片解析 END ==============】
+
+![in_table_CBKGbR0cyoVvgNx6ze9cSz6zn6n](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_CBKGbR0cyoVvgNx6ze9cSz6zn6n.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### **单词搜索界面 (Word Search Interface)**
+
+*   **顶部状态栏 (Top Status Bar)**
+    *   左侧: 显示时间 `7:35` 和日期 `Mon Jun 3`。
+    *   右侧: 显示 Wi-Fi 信号图标和电池电量 `100%`。
+
+*   **导航与搜索区域 (Navigation & Search Area)**
+    *   **返回按钮 (`<`)**: 位于左上角。
+    *   **搜索输入框**:
+        *   当前输入内容: `red`。
+        *   清除按钮 (`×`): 用于清空输入框。
+
+*   **搜索结果列表 (Search Results List)**
+    *   根据输入内容 `red` 实时展示的搜索建议。
+    *   **结果项 1**:
+        *   单词: `red`
+        *   释义: `adj. 红的，红色的；（毛发）红褐色的；（脸）涨红的`
+    *   **结果项 2**:
+        *   单词: `reduce`
+        *   释义: `v. 减少，降低`
+        *   附加标签: `最近查过`
+    *   **结果项 3**:
+        *   单词: `redundant`
+        *   释义: `adj. 多余的，累赘的`
+
+*   **虚拟键盘 (Virtual Keyboard)**
+    *   **键盘主体**: 标准 QWERTY 英文布局。
+    *   **功能按键**:
+        *   数字/符号切换: `?123`
+        *   中/英文切换: `中/英`
+        *   表情符号: `😊`
+        *   删除键
+        *   **执行操作键**: `搜索` (蓝色高亮)
+    *   **键盘控制**: 位于键盘区域右上角的 `∨` 图标，用于收起键盘。
+
+【============== 图片解析 END ==============】
+
+![in_table_IzztbfnH5oKxmpxOroKcaotJn9e](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_IzztbfnH5oKxmpxOroKcaotJn9e.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+此界面为一款词典或翻译应用的搜索页面，其界面结构如下：
+
+*   **1. 页面整体**
+    *   **1.1. 状态栏 (Status Bar)**: 位于屏幕顶部，显示设备信息。
+        *   时间与日期: `7:35 Mon Jun 3`
+        *   信号与Wi-Fi图标
+        *   电池状态: `100%`
+    *   **1.2. 搜索功能区 (Search Area)**: 位于状态栏下方。
+        *   **1.2.1. 返回按钮**: 页面左上角的 `<` 图标。
+        *   **1.2.2. 搜索输入框**: 包含占位提示文本 `输入英文或中文...`。
+    *   **1.3. 搜索历史区 (Search History Area)**: 显示在搜索框下方。
+        *   **1.3.1. 历史记录列表**:
+            *   记录一: `palate n. 味觉; 品味`
+            *   记录二: `feijoa n. 菲油果`
+        *   **1.3.2. 清空历史按钮**: 位于历史记录列表下方，文本为 `清空历史`。
+    *   **1.4. 系统键盘 (System Keyboard)**: 位于屏幕下半部分。
+        *   **1.4.1. 键盘工具栏**: 在按键区上方。
+        *   **1.4.2. 按键区**: 标准QWERTY布局。
+        *   **1.4.3. 功能键**:
+            *   数字/符号切换键: `?123`
+            *   中英文切换键: `中/英`
+            *   执行搜索键: 位于右下角的蓝色按钮，文本为 `搜索`。
+
+【============== 图片解析 END ==============】
+
+![in_table_OwFeb3k1Jof0NIxTGu6cYAsfnnc](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_OwFeb3k1Jof0NIxTGu6cYAsfnnc.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+该界面为在线词典中关于单词“record”的详情页。
+
+-   **单词及发音**
+    -   单词：`record`
+    -   音标及发音：`/ˈrekəːd; rɪˈkɔːd /`，附带一个发音播放按钮 ⟨🔊⟩。
+    -   收藏按钮 (☆)。
+
+-   **词性与释义**
+    -   **n.** (名词): 记录，记载；唱片
+    -   **v.** (动词): 记录；录制
+
+-   **词形变化**
+    -   复数: `records`
+    -   第三人称单数: `records`
+    -   现在分词: `recording`
+    -   过去时: `recorded`
+    -   过去分词: `recorded`
+
+-   **经典例句模块**
+    -   **标题**: `经典例句`
+    -   **词性筛选标签**:
+        -   `名词` (当前选中)
+        -   `动词`
+    -   **名词例句内容**:
+        -   释义提示: `n. 记录, 记载`
+        -   英文例句: `Last summer was the wettest on record.`
+        -   中文翻译: `去年夏天是有记录以来降雨量最大的。`
+
+【============== 图片解析 END ==============】
+
+![in_table_LIrybG2dUojDv0xoisccrVJBnEb](https://static.test.xiaoluxue.cn/LuBan/format-prd/images/image_LIrybG2dUojDv0xoisccrVJBnEb.png)
+
+###### 图片分析
+【============== 图片解析 BEGIN UI图 ==============】
+
+### “我的生词本” 页面结构解析
+
+此界面为“我的生词本”功能，用于展示用户收藏的单词列表。
+
+#### 1. 页面整体布局
+
+*   **顶部导航栏**:
+    *   左侧: 返回按钮。
+    *   中间: 页面标题 "我的生词本"。
+*   **列表信息与控制区**:
+    *   生词总数统计: "共113词"。
+    *   排序筛选器: "时间倒序 ▼"，表示当前列表按时间降序排列，且为可交互组件。
+*   **生词列表**:
+    *   由多个独立的单词卡片纵向排列组成。
+
+#### 2. 单个单词卡片元素构成
+
+每个卡片均包含以下元素，从左至右排列：
+
+*   **发音图标**: 用于触发单词读音。
+*   **单词**: 英文单词本身。
+*   **音标**: 单词的音标注释。
+*   **词性与释义**: 单词的词性及中文含义。
+*   **收藏状态**: 右侧的黄色星形图标，表示该词已被收藏。
+
+#### 3. 页面内容实例
+
+根据图片，当前列表展示了以下单词：
+
+*   `staple` /'steɪpl/ vt. 装订；用订书钉装订
+*   `ridge` /rɪdʒ/ vt. 山脊，山脉高点隆起的部分
+*   `refrigerator` /rɪˈfrɪdʒəreɪtər/ vt. 电冰箱
+*   `cask` /kæsk/ vt. 大木桶，酒桶
+*   `acorn` /'eɪkɜːrn/ vt. 橡果（橡树的种子）
+*   `flask` /flæsk/ n. 烧瓶
+*   `acorn` /'eɪkɜːrn/ vt. 橡果（橡树的种子）
+
+【============== 图片解析 END ==============】
+
+
+
+#### 6.3 数据存储
+
+<table>
+<tr>
+<td>模块<br/></td><td>数据项<br/></td></tr>
+<tr>
+<td>单词维度<br/></td><td>1. 每个单词被搜索过的记录明细：单词id、学生id、搜索日期<br/>2. 未搜索到结果的搜索条目明细：搜索内容（搜索框输入的内容）、学生id、搜索日期<br/></td></tr>
+<tr>
+<td>学生维度<br/></td><td>1. 每个学生的查词记录明细：学生id、搜索日期、搜索内容（搜索框输入的内容）、搜索到的单词（进入详情页的单词，有则记录，无则空缺）<br/></td></tr>
+<tr>
+<td>生词本<br/></td><td>1. 每个学生生词本内单词列表：学生id、单词id<br/></td></tr>
+</table>
+
+### 附：评审记录
